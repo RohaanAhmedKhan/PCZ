@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PCZ Vendor's Portal</title>
+
+    @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/imgs/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/imgs/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/imgs/favicon-16x16.png">
+    <link rel="manifest" href="/assets/imgs/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/imgs/favicon.ico">
+    <meta name="msapplication-TileColor" content="#eeff0d">
+    <meta name="msapplication-config" content="/assets/imgs/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <!------ Include the above in your HEAD tag ---------->
+
+    @Styles.Render("~/Content/css")
+    
+    @Scripts.Render("~/bundles/modernizr")
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top no-margin hidden-lg hidden-md hidden-sm">
+
+        <div class="navbar-header fixed-brand">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" id="menu-toggle">
+                <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+            </button>
+            <a class="navbar-brand" href="#"><i class="fa fa-rocket fa-4"></i> PCZ Vendor's Portal</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></button>
+                </li>
+            </ul>
+        </div>
+        <!-- navbar-header-->
+        <!-- bs-example-navbar-collapse-1 -->
+    </nav>
+    <div id="wrapper">
+
+        <div class="hidden-lg hidden-md hidden-sm" style="margin-bottom:55px !important"></div>
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+
+            <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+                @{
+                    string current = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
+                    string action = ViewContext.RouteData.Values["Action"].ToString().ToLower();
+                }
+
+
+                <li class="sidebar-brand">
+
+                    @if (Request.IsAuthenticated)
+                    {
+
+                        var name = HttpContext.Current.User.Identity.Name;
+                        var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+                        if (authCookie != null)
+                        {
+                            var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                            var data = authTicket.UserData.Split('|');
+                            name = data[0];
+                            <img src="@data[1]" style="border-radius:100px" height="100" width="100" />
+                        }
+                        <label style="margin-top:-15px;">@name</label>
+                    }
+
+                </li>
+
+                <li class="@(current.Equals("vendordashboard") ? "lactive" : "" )"><a href="/Vendor/VendorDashboard"><i class="fas fa-house-user"></i> Dashboard</a></li>
+                <li class="@(current.Equals("myprices") ? "lactive" : "" )"><a href="/Vendor/MyPrices"><i class="fas fa-dollar-sign"></i> My Prices</a></li>
+                <li class="@(current.Equals("repairjobs") && action.Equals("book") ? "lactive" : "" )"><a href="/Vendor/RepairJobs/Book"><i class="fas fa-tools"></i> Book A Repair</a></li>
+                <li class="@(current.Equals("repairjobs") && action.Equals("pending") ? "lactive" : "" )"><a href="/Vendor/RepairJobs/Pending"><i class="fas fa-hourglass-half"></i> Pending</a></li>
+                <li class="@(current.Equals("repairjobs") && action.Equals("PendingDispatch") ? "lactive" : "" )"><a href="/Vendor/RepairJobs/PendingDispatch"><i class="fas fa-hourglass-half"></i> Pending Dispatch</a></li>
+                <li class="@(current.Equals("repairjobs") && action.Equals("history")? "lactive" : "" )"><a href="/Vendor/RepairJobs/history"><i class="fas fa-history"></i> History</a></li>
+                <li class="@(current.Equals("repairjobs") && action.Equals("cancelled")? "lactive" : "" )"><a href="/Vendor/RepairJobs/Cancelled"><i class="fas fa-window-close"></i> Cancelled</a></li>
+                <li class="@(current.Equals("repairjobs") && action.Equals("payment")? "lactive" : "" )"><a href="/Vendor/RepairJobs/payment"><i class="fas fa-pound-sign"></i> Payment</a></li>
+                @if (Request.IsAuthenticated)
+                {
+                    using (Html.BeginForm("logout", "session", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+                }
+            </ul>
+
+
+        </div>
+
+
+        <div class="page-content-wrapper">
+            <div class="body-content" style="padding-top:5px !important">
+                @RenderBody()
+                <hr />
+
+
+                <div id="overlay">
+                    <div class="cv-spinner">
+                        <span class="spinner"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div id="overlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
+
+
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+
+    @RenderSection("scripts", required: false)
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/js/buttons.jqueryui.min.js" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jq-3.3.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.css" />
+
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/jq-3.3.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+
+        $('#printInvoice').click(function () {
+
+            Popup($('.invoice')[0].outerHTML);
+            function Popup(data) {
+                setTimeout(function () { window.print(); }, 10);
+                return true;
+            }
+        });
+
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        $("#menu-toggle-2").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled-2");
+            $('#menu ul').hide();
+        });
+
+        function initMenu() {
+            $('#menu ul').hide();
+            $('#menu ul').children('.current').parent().show();
+            //$('#menu ul:first').show();
+            $('#menu li a').click(
+                function () {
+                    var checkElement = $(this).next();
+                    if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+                        return false;
+                    }
+                    if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+                        $('#menu ul:visible').slideUp('normal');
+                        checkElement.slideDown('normal');
+                        return false;
+                    }
+                }
+            );
+        }
+        $(document).ready(function () {
+            initMenu();
+
+            $(".clk_index_table").click(function () {
+                window.document.location = $(this).data("href");
+            });
+
+            $('#dtTbl').DataTable({
+                "scrollY": "75vh",
+                "scrollCollapse": true,
+                "paging": true,
+                "language": {
+                    "lengthMenu": "Items per page: _MENU_ ",
+                    "zeroRecords": "Nothing found - sorry",
+                    "infoEmpty": "No records available"
+                }
+            });
+
+
+            var tbl = $('#dtTblExport').DataTable({
+
+                "scrollY": "75vh",
+                "scrollCollapse": true,
+                "paging": true,
+                "language": {
+                    "lengthMenu": "Items per page: _MENU_ ",
+                    "zeroRecords": "Nothing found - sorry",
+                    "infoEmpty": "No records available"
+                },
+                dom: 'Blfrtip',
+                buttons: [
+                    'excelHtml5', 'pdfHtml5'
+                ]
+            });
+
+            tbl.buttons().container().insertBefore('#example_wrapper .col-sm-6:eq(0)');
+
+            $('.ddSearch').select2({
+                placeholder: 'Select an option'
+
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+﻿@model PCZ.Models.Job
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
+
+<div class="container " style="  margin-bottom: 0px;  padding: 0px !important;">
+    <div class="row" style="        padding: 0px !important; margin-bottom:0;padding-bottom: 0;
+">
+        <div class="col-1 col-md-4 col-sm-6 col-xs-12 col-lg-12" style="padding:0px !important">
+            <div id="invoice" style="margin-bottom: 0; padding-bottom: 0;" @*style="height:auto !important; padding:0px !important"*@>
+
+                <div class="toolbar row hidden-print" >
+                    <div class="text-center">
+
+                        @if (Model.Status == "Pending")
+                        {
+                            @*<div style="float:left;margin:5px">
+                                @using (Html.BeginForm("Cancel", "RepairJobs", FormMethod.Post, new { @onsubmit = "return confirm('Are you sure you want to cancel this Invoice?');" }))
+                                {
+                                    <input type="hidden" name="invNo" value="@Model.JobNo" />
+                                    <button class="btn btn-danger" type="submit"><i class="fa fa-window-close"></i> Cancel</button>
+                                }
+                            </div>*@
+
+                            <div style="float:left;margin:5px">
+                                @using (Html.BeginForm("Edit", "RepairJobs", FormMethod.Get))
+                                {
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <button class="btn btn-info" type="submit"><i class="fa fa-edit"></i> Edit</button>
+                                }
+                            </div>
+                        }
+
+
+                        <div style="float:left;margin:5px 10px 5px 5px">
+                            <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invoice overflow-auto A5" style="margin-top: -90px;margin-bottom:0;padding-bottom:0;  padding: 1px !important;">
+                    <div  style="margin: 0px;">
+                        <header  style="margin: 0px;">
+                            <div class="row" style="margin: 0px;">
+                                <div style=" width:33% !important; margin:0 63% 0 37% !important">
+
+                                    @*<img src="http://lobianijs.com/lobiadmin/version/1.0/ajax/img/logo/lobiadmin-logo-text-64.png" data-holder-rendered="true" />*@
+                                    <img src="~/assets/imgs/logo.png" data-holder-rendered="true" style="max-height:80px" />
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10 col-lg-offset-1 company-details">
+                                    <h4 class="name" style="color: #3989c6; text-align:center">Phone & Computer Zone Ltd.</h4>
+                                </div>
+                            </div>
+                        </header>
+                        <main>
+                            <div class="row invoice-details">
+                                <div class="col-xs-6 col-xs-offset-2">
+                                    <h3 class="invoice-id">@Model.JobNo</h3>
+                                    <h4>Total Invoices : <b>@ViewBag.InvoiceNo </b> </h4>
+                                </div>
+                            </div>
+                            @*<div class="row contacts">
+                                    <div class="col-lg-6 col-xs-6 invoice-to">
+
+                                        <label class="to">Customer Name:</label>
+                                        <label class="to">Customer Phone:</label>
+                                        <label class="to">Customer Email:</label>
+                                        <label class="to">Submit Date:</label>
+                                        <label class="to">Pickup Date:</label>
+                                        <label class="to">Status:</label>
+
+                                    </div>
+                                    <div class="col-lg-6 col-xs-6 invoice-to" style="text-align: right !important">
+                                        <label class="to">@Model.CustomerName</label>
+                                        <label class="to">@Model.CustomerPhone</label>
+                                        <label class="to">@Model.CustomerEmail</label>
+                                        <label class="to">@Model.SubmitDate</label>
+                                        @if (Model.ReturnDate != null)
+                                        {
+                                            <label class="to">@Model.ReturnDate.Value.Date.ToString("dd MMMM yyyy")</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="to">- - - </label>
+                                        }
+
+                                        @{var textcolor = (Model.Status == "Cancelled") ? "text-danger" : "text-info"; }
+                                        <div class="date"><label class="@textcolor">@Model.Status</label> </div>
+                                    </div>
+                                </div>*@
+                            <div class="row contacts" style="margin-bottom:0px">
+                                <div class="col-lg-5 col-xs-5 invoice-to">
+                                    <label style="font-size:16px" class="to">Customer Name:</label>
+                                    <label style="font-size:16px" class="to">@Model.CustomerName</label>
+                                </div>
+                                <div class="col-lg-7 col-xs-7 invoice-to" style="text-align: right !important">
+                                    <label class="to" style="font-size:16px">Customer Phone:</label>
+                                    <label class="to" style="font-size:16px">@Model.CustomerPhone</label>
+                                </div>
+                            </div>
+                            <div class="row contacts" style="margin-bottom:2px">
+                                <div class="col-lg-5 col-xs-5 invoice-to">
+                                    <label class="to" style="font-size:16px">Customer Email:</label>
+                                    <label class="to" style="font-size:16px">@Model.CustomerEmail</label>
+                                </div>
+                            </div>
+                            <div class="row contacts" style="margin-bottom:2px">
+                                <div class="col-lg-6 col-xs-6 invoice-to">
+                                    <label class="to" style="font-size:16px">Submit Date:</label>
+                                    <label class="to" style="font-size:16px">@Model.SubmitDate.Date.ToString("dd MMMM yyyy")</label>
+                                </div>
+                                <div class="col-lg-6 col-xs-6 invoice-to" style="text-align: right !important">
+                                    <label class="to" style="font-size:16px">Pickup Date:</label>
+                                    @if (Model.ReturnDate != null)
+                                    {
+                                        <label class="to" style="font-size:16px">@Model.ReturnDate.Value.Date.ToString("dd MMMM yyyy")</label>
+                                    }
+                                    else
+                                    {
+                                        <label style="font-size:16px" class="to">- - - </label>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row contacts"  style="margin-bottom:8px">
+                                <div class="col-lg-5 col-xs-5 invoice-to">
+                                    <label style="font-size:16px" class="to">Status:</label>
+                                    @{var textcolor = (Model.Status == "Cancelled") ? "text-danger" : "text-info"; }
+                                    <span class="date to"><label style="font-size:16px" class="@textcolor">@Model.Status</label> </span>
+
+                                </div>
+                            </div>
+
+                            <div class="row contacts" style="margin-bottom:10px">
+                                <div class="col-lg-5 col-xs-5 invoice-to">
+                                    <div class="text-gray-light" style="font-size:18px">Device Name:</div>
+                                    <h5 class="to" style="font-size:18px">@Model.Device.Brand.Name @Model.Device.Name</h5>
+                                </div>
+                                <div class="col-lg-7 col-xs-7 invoice-details">
+                                    <div class="text-gray-light" style="font-size:14px">Device Type:</div>
+                                    <h5 class="invoice-id" style="font-size:18px">@Model.Device.Brand.DeviceType.Name</h5>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom:0; padding-bottom:0;">
+                                <div class="col-lg-12 col-xs-12">
+                                    <table class="table" border="0" cellspacing="0" cellpadding="0">
+                                        <thead>
+                                            <tr style="width:100% !important">
+                                                <th width=""><h3>#</h3></th>
+                                                <th class="text-left" width="750"><h3 @*style="font-size:22px"*@>DESCRIPTION</h3></th>
+                                                <th class="text-right"><h3>COST</h3></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @{
+                                                int sum = 0;
+                                                var count = 1;
+                                                foreach (var issue in Model.JobIssues)
+                                                {
+                                                    <tr>
+                                                        <td class="no"><h3 style="font-size: 18px;color: white">@count</h3></td>
+                                                        <td class="text-left"><h3 style="        font-size: 18px">@issue.Issue.Description</h3></td>
+                                                        <td class="total"><h3 style="font-size: 18px;color:white">@issue.Issue.Price.ToString("N0") /-</h3></td>
+                                                    </tr>
+                                                    count++;
+                                                    sum += issue.Issue.Price;
+                                                }
+                                                if (Model.OtherCharges > 0)
+                                                {
+                                                    <tr>
+                                                        <td class="no"><h3 style="font-size: 18px;color: white">@count</h3></td>
+                                                        <td class="text-left"><h3 style="font-size:18px">@Model.OtherIssue</h3></td>
+                                                        <td class="total"><h3 style="font-size: 18px;color: white">@Model.OtherCharges.ToString("N0") /-</h3></td>
+                                                    </tr>
+                                                    sum += Model.OtherCharges;
+                                                }
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                    <table cellpadding="0" class="table">
+
+                                        <tfoot>
+                                            <tr>
+                                                <td><h3 style="font-size:16px">SUBTOTAL</h3></td>
+                                                <td></td>
+                                                <td><h3 style="font-size:16px">&#163; @sum.ToString("N0") /-</h3></td>
+                                            </tr>
+
+                                            <tr style=" border-top: 1px solid #3989c6">
+                                                <td><h2 @*style="font-size:22px"*@>GRAND TOTAL</h2></td>
+                                                <td></td>
+                                                <td colspan=""><h2 @*style="font-size:22px"*@>&#163;@sum.ToString("N0") /-</h2></td>
+                                            </tr>
+
+
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="notices" style="margin-top:0;padding-top:0;">
+                                <div>TERMS AND CONDITIONS :</div>
+                                <div class="notice">
+                                    ➢ No fee will be charged fir the goods those are not fixed. <br />
+                                    ➢ Repairs are guaranteed for <b>07</b> days from the date of completion.
+                                    Guarantee does not extend to cover free repair of any oother fault
+                                    which may develop in this period. <br />
+                                    ➢ <b>LCD screen</b> replacement come with no warranty.<br />
+                                    ➢ No responsibility for goods not collected after <b>2 months</b>.
+                                    After <b>2 months</b> Phones n Computer Zone can sell the goods to
+                                    recover fixing or upgrading cost. <br />
+                                    ➢ No responsibility for films/electronic media which includes music or any form
+                                    of data left in the device for repair.
+                                </div>
+                            </div>
+                        </main>
+                        <footer>
+                            <div>71 Market Street, Shaw OL2 8NP</div>
+                            <div>07106 667464 | +44 7735 629284</div>
+                            <div style="margin-bottom:-30px;">phonencomputerzone@gmail.com</div>
+                        </footer>
+                    </div>
+                    <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+                    @*<div></div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<br />
+    <br />
+    <br />
+
+    <div class="container" id="printable">
+        <div class="row">
+
+            <div class="col-xs-11 col-sm-9 col-md-7 col-lg-6">
+                <div class="div-section">
+                    <div class="div-section-heading"><h4>Invoice Details</h4></div>
+
+                    <div class="div-section-body">
+                        <h3>Phone n Computer Zone</h3>
+
+                        <table class="table table-responsive">
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.OtherIssue)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.OtherIssue)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.Note)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.Note)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.Status)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.SubmitDate)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.SubmitDate)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.ReturnDate)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.ReturnDate)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.JobNo)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.JobNo)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.ImgUrl)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.ImgUrl)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.TotalCost)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.TotalCost)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.OtherCharges)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.OtherCharges)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.CustomerName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.CustomerName)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.CustomerPhone)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.CustomerPhone)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.CustomerEmail)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.CustomerEmail)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.Device.Name)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.Device.Name)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayNameFor(model => model.Vendor.BusinessName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.Vendor.BusinessName)
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-11 col-sm-6 col-md-7 col-lg-6">
+
+                <div class="div-section">
+                    <div class="div-section-heading"><h4>Invoice Items</h4></div>
+
+                    <div class="div-section-body">
+                        <table class="table">
+                            @foreach (var issue in Model.JobIssues) {
+                                <tr>
+                                    <td>@issue.Issue.Description</td>
+                                    <td>Rs. @issue.Cost.ToString("n0")/-</td>
+                                </tr>
+                            }
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <input type="button" onclick="PrintDiv()" class="greenButtonEdged form-control" value="Print" />
+
+    <script type="text/javascript">
+
+        function PrintDiv() {
+                    var divContents = document.getElementById("printable").innerHTML;
+                    var printWindow = window.open('', '', 'height=' + screen.height + ',width=' + screen.width);
+
+                    Popup($('.invoice')[0].innerHTML);
+                    function Popup(data) {
+                        window.print();
+                        return true;
+                    }
+
+                    return true;
+                }
+    </script>
+
+    @*<script type="text/javascript">
+
+                function PrintDiv() {
+                    var divContents = document.getElementById("printable").innerHTML;
+                    var printWindow = window.open('', '', 'height=' + screen.height + ',width=' + screen.width);
+                    printWindow.document.write('<html><head><title>Print DIV Content</title><link href="/Content/bootstrap.css" rel="stylesheet"/><link href="/Content/Site.css" rel="stylesheet"/>');
+                    printWindow.document.write('</head><body >');
+                    printWindow.document.write(divContents);
+                    printWindow.document.write('</body></html>');
+                    printWindow.document.close();
+                    printWindow.focus();
+
+                    setTimeout(function () { printWindow.print(); }, 8000);
+
+                    return true;
+                }
+        </script>*@ 

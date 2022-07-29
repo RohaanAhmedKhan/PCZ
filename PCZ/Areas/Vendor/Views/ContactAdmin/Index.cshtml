@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PCZ.Models.VendorMessage>
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="div-section">
+
+    <div class="div-section-heading" style="display:flex; justify-content:space-between">
+        <h4>Messages</h4>
+        <h4 style="margin-right:3px">Unread: @Model.Where(m => !m.IsRead).Count() </h4>
+    </div>
+
+    <div class="row div-body">
+        <div class="col-sm-12">
+
+            <table class="table table-striped" id="dtTbl">
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+
+
+                        <tr style="@( item.Sender == "Admin" ? "text-align: right" : "")">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Message)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+

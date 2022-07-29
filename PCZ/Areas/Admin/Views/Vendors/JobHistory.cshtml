@@ -1,0 +1,293 @@
+﻿@model PCZ.ViewModels.RepairsVM
+@{
+    ViewBag.Title = "Job History";
+}
+@*id="filter"*@
+<button class="btn btn-primary" id="allfilter" type="submit">All</button>
+<button class="btn btn-info " id="comfilter" type="submit">Completed</button>
+<button class="btn btn-default " id="penfilter" type="submit">Pending</button>
+<button class="btn btn-danger" id="canfilter" type="submit">Cancelled</button>
+
+    <div class="div-section" id="allGrid">
+        <div class="div-section-heading"><h4> All Jobs</h4></div>
+
+        <div class="row div-section-body">
+            <div class="col-sm-12" style="padding:0 !important">
+
+                <table class="table table-striped table-bordered table-responsive" id="dtTbl">
+                    <thead>
+                        <tr>
+                            <th width="10%">Invoice No</th>
+                            <th width="13%">Customer Name</th>
+                            <th width="7%">Customer Phone</th>
+                            <th width="15%">Customer Email</th>
+                            <th width="10%">Device</th>
+                            <th width="7%">Cost</th>
+                            <th width="10%">Date</th>
+                            <th width="10%">Note</th>
+                            <th width="10%">Status</th>
+                            <th width="10%">Return Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dt in Model.Jobs)
+                        {
+                            string dtl = "/Admin/Jobs/Details/?id=" + dt.Id;
+                            <tr data-href="@dtl" class="clk_index_table">
+                                <td>@dt.JobNo</td>
+                                <td>@dt.CustomerName</td>
+                                <td>@dt.CustomerPhone</td>
+                                <td>@dt.CustomerEmail</td>
+                                <td>@dt.Device.Brand.Name @dt.Device.Name</td>
+                                <td>@dt.TotalCost.ToString("N0")</td>
+                                <td>@dt.SubmitDate</td>
+                                <td>@dt.Note</td>
+                                <td>@dt.Status</td>
+                                <td>@dt.ReturnDate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-section" id="completeGrid">
+        <div class="div-section-heading"><h4>All Completed Jobs</h4></div>
+
+        <div class="row div-section-body">
+            <div class="col-sm-12" style="padding:0 !important">
+
+                <table class="table table-striped table-bordered table-responsive" id="dtTbl">
+                    <thead>
+                        <tr>
+                            <th width="10%">Invoice No</th>
+                            <th width="13%">Customer Name</th>
+                            <th width="7%">Customer Phone</th>
+                            <th width="15%">Customer Email</th>
+                            <th width="10%">Device</th>
+                            <th width="7%">Cost</th>
+                            <th width="10%">Date</th>
+                            <th width="10%">Note</th>
+                            <th width="10%">Status</th>
+                            <th width="10%">Return Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dt in Model.Jobs.Where(j => (j.Status == "Completed")))
+                        {
+                            string dtl = "/Admin/Jobs/Details/?id=" + dt.Id;
+                            <tr data-href="@dtl" class="clk_index_table">
+                                <td>@dt.JobNo</td>
+                                <td>@dt.CustomerName</td>
+                                <td>@dt.CustomerPhone</td>
+                                <td>@dt.CustomerEmail</td>
+                                <td>@dt.Device.Brand.Name @dt.Device.Name</td>
+                                <td>@dt.TotalCost.ToString("N0")</td>
+                                <td>@dt.SubmitDate</td>
+                                <td>@dt.Note</td>
+                                <td>@dt.Status</td>
+                                <td>@dt.ReturnDate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-section" id="pendingGrid">
+        <div class="div-section-heading"><h4>All Pending Jobs</h4></div>
+
+        <div class="row div-section-body">
+            <div class="col-sm-12" style="padding:0 !important">
+
+                <table class="table table-striped table-bordered table-responsive" id="dtTbl">
+                    <thead>
+                        <tr>
+                            <th width="10%">Invoice No</th>
+                            <th width="13%">Customer Name</th>
+                            <th width="7%">Customer Phone</th>
+                            @*<th width="15%">Customer Email</th>*@
+                            <th width="10%">Device</th>
+                            <th width="7%">Cost</th>
+                            <th width="10%">Date</th>
+                            <th width="10%">Note</th>
+                            <th width="10%">Status</th>
+                            <th width="10%">Return Date</th>
+                            <th width="7%">Edit</th>
+                            <th width="7%">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dt in Model.Jobs.Where(j => (j.Status == "Pending")))
+                        {
+                            //string dtl = "/Admin/Jobs/Details/?id=" + dt.Id;
+                            <tr class="clk_index_table">
+                                <td>@dt.JobNo</td>
+                                <td>@dt.CustomerName</td>
+                                <td>@dt.CustomerPhone</td>
+                                @* <td>@dt.CustomerEmail</td>*@
+                                <td>@dt.Device.Brand.Name @dt.Device.Name</td>
+                                <td>@dt.TotalCost.ToString("N0")</td>
+                                <td>@dt.SubmitDate</td>
+                                <td>@dt.Note</td>
+                                <td>@dt.Status</td>
+                                <td>@dt.ReturnDate</td>
+                                <td>
+                                    @using (Html.BeginForm("Edit", "Jobs", FormMethod.Get))
+                                    {
+                                        <input type="hidden" name="Id" value="@dt.Id" />
+                                        <button class="btn btn-info" type="submit"><i class="fa fa-edit"></i></button>
+                                    }
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("Details", "Jobs", FormMethod.Get))
+                                    {
+                                        <input type="hidden" name="Id" value="@dt.Id" />
+                                        <button class="btn btn-info" type="submit"><i class="fa fa-print"></i></button>
+                                    }
+                                </td>
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-section" id="cancelGrid">
+        <div class="div-section-heading"><h4> All Cancelled Jobs</h4></div>
+
+        <div class="row div-section-body">
+            <div class="col-sm-12" style="padding:0 !important">
+
+                <table class="table table-striped table-bordered table-responsive" id="dtTbl">
+                    <thead>
+                        <tr>
+                            <th width="10%">Invoice No</th>
+                            <th width="13%">Customer Name</th>
+                            <th width="7%">Customer Phone</th>
+                            <th width="15%">Customer Email</th>
+                            <th width="10%">Device</th>
+                            <th width="7%">Cost</th>
+                            <th width="10%">Date</th>
+                            <th width="10%">Note</th>
+                            <th width="10%">Status</th>
+                            <th width="10%">Return Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dt in Model.Jobs.Where(j => (j.Status == "Cancelled")))
+                        {
+                            string dtl = "/Admin/Jobs/Details/?id=" + dt.Id;
+                            <tr data-href="@dtl" class="clk_index_table">
+                                <td>@dt.JobNo</td>
+                                <td>@dt.CustomerName</td>
+                                <td>@dt.CustomerPhone</td>
+                                <td>@dt.CustomerEmail</td>
+                                <td>@dt.Device.Brand.Name @dt.Device.Name</td>
+                                <td>@dt.TotalCost.ToString("N0")</td>
+                                <td>@dt.SubmitDate</td>
+                                <td>@dt.Note</td>
+                                <td>@dt.Status</td>
+                                <td>@dt.ReturnDate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#completeGrid').hide();
+                $('#pendingGrid').hide();
+                $('#cancelGrid').hide();
+                $('#allGrid').show();
+            });
+
+            var e0 = document.getElementById('allfilter');
+            if (e0) {
+                e0.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    var filter = $('.filter').html();
+                    console.log("filter ", filter);
+                    $('#allGrid').show();
+                    $('#completeGrid').hide();
+                    $('#pendingGrid').hide();
+                    $('#cancelGrid').hide();
+
+                });
+            }
+            var e2 = document.getElementById('comfilter');
+            if (e2) {
+                e2.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    var filter = $('.filter').html();
+                    console.log("filter ", filter);
+                    $('#allGrid').hide();
+                    $('#completeGrid').show();
+                    $('#pendingGrid').hide();
+                    $('#cancelGrid').hide();
+
+                });
+            }
+
+            var e3 = document.getElementById('penfilter');
+            if (e3) {
+                e3.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    var filter = $('.filter').html();
+                    console.log("filter ", filter);
+                    $('#allGrid').hide();
+                    $('#completeGrid').hide();
+                    $('#pendingGrid').show();
+                    $('#cancelGrid').hide();
+
+                });
+            }
+            var e4 = document.getElementById('canfilter');
+            if (e4) {
+                e4.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    var filter = $('#canfilter').html();
+                    console.log("filter ", filter);
+                    $('#allGrid').hide();
+                    $('#completeGrid').hide();
+                    $('#pendingGrid').hide();
+                    $('#cancelGrid').hide();
+
+                    myFunction(filter);
+                });
+            }
+
+
+            var myFunction = function (filter) {
+                switch (filter) {
+                    case "Completed":
+                        $('#completeGrid').show();
+                        break;
+                    case "Pending":
+                        $('#pendingGrid').show();
+                        break;
+                    case "Cancelled":
+                        $('#cancelGrid').show();
+                        break;
+                    default:
+                        $('#allGrid').show();
+                        break;
+                }
+            };
+
+
+
+        </script>
+    }
+

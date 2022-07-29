@@ -1,0 +1,569 @@
+﻿@model PCZ.ViewModels.AdminDashboardVM
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+<style>
+    :root {
+        --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        --msger-bg: #fff;
+        --border: 2px solid #ddd;
+        --left-msg-bg: #ececec;
+        --right-msg-bg: #3C8DBC;
+    }
+
+    html {
+        box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+    }
+
+    .scrollthis {
+        height: 100vh;
+        font-family: Helvetica, sans-serif;
+    }
+
+    .msger {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 867px;
+        margin: 0 0px;
+        height: calc(100% - 50px);
+        border: var(--border);
+        border-radius: 5px;
+        background: var(--msger-bg);
+        box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
+    }
+    .msger1 {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 867px;
+        margin: 0 0px;
+        border: var(--border);
+        border-radius: 5px;
+        background: var(--msger-bg);
+        box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
+    }
+    .msger-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: var(--border);
+        background: #eee;
+        color: #666;
+    }
+
+    .msger-chat {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+        .msger-chat::-webkit-scrollbar {
+            width: 6px;
+
+        }
+
+        .msger-chat::-webkit-scrollbar-track {
+            background: #ddd;
+        }
+
+        .msger-chat::-webkit-scrollbar-thumb {
+            background: #bdbdbd;
+        }
+
+    .msg {
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 10px;
+    }
+
+        .msg:last-of-type {
+            margin: 0;
+        }
+
+    .msg-img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        background: #ddd;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        border-radius: 50%;
+    }
+
+    .msg-bubble {
+        max-width: 450px;
+        padding: 15px;
+        border-radius: 15px;
+        background: var(--left-msg-bg);
+    }
+
+    .msg-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .msg-info-name {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    .msg-info-time {
+        font-size: 0.85em;
+    }
+
+    .left-msg .msg-bubble {
+        border-bottom-left-radius: 0;
+    }
+
+    .right-msg {
+        flex-direction: row-reverse;
+    }
+
+        .right-msg .msg-bubble {
+            background: var(--right-msg-bg);
+            color: #fff;
+            border-bottom-right-radius: 0;
+        }
+
+        .right-msg .msg-img {
+            margin: 0 0 0 10px;
+        }
+
+    .msger-inputarea {
+        display: flex;
+        padding: 10px;
+        border-top: var(--border);
+        background: #eee;
+    }
+
+        .msger-inputarea * {
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1em;
+        }
+
+    .msger-input {
+        flex: 1;
+        background: #ddd;
+    }
+
+    .msger-send-btn {
+        margin-left: 10px;
+        background: rgb(0, 196, 65);
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.23s;
+    }
+
+        .msger-send-btn:hover {
+            background: rgb(0, 180, 50);
+        }
+
+    .msger-chat {
+        background-color: #fcfcfe;
+    }
+</style>
+
+<div class="row w3-container w3-center w3-animate-bottom" style="margin-top:50px; margin-left:10px !important">
+    <!-- <-----------------------------------------------------------Box--------------------------------------------------------->
+    <div class="col-md-5 col-lg-5">
+
+        <div class="row">
+        </div>
+
+        <div class="row" style="padding-left:13px">
+
+            <div class="col-md-4  col-lg-4">
+
+
+
+                <div class="card" id="vendorChats">
+                    <table class="table table-hover table-striped" style="text-align:center">
+                        <tr style="background-color:#3C8DBC;color:#ffffff">
+
+                            <th style="text-align:center" colspan="3">Messeges</th>
+                        </tr>
+
+                        @foreach (var i in Model.vendors)
+                        {
+                            if (i.IsRead)
+                            {
+                                <tr style="background-color: #ffffff;color: #b2cee1">
+                                    <td>
+                                        <i class="fas fa-user" style="font-size:30px;padding-top:0px"></i>
+                                    </td>
+                                    <td class="text ">
+                                        @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null) <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>
+
+                                    </td>
+                                </tr>
+                            }
+                            if (!i.IsRead)
+                            {
+                                <tr style="background-color: #b2cee1;color: #034878;">
+
+                                    <td>
+                                        <i class="fas fa-user" style="font-size:30px;padding-top:0px"></i>
+                                    </td>
+                                    <td class="text ">
+                                        @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null)  <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+
+            </div>
+            <input type="hidden" name="VendorID" class="cvendor-ID" value="@Model.VendorID" />
+            <div class="col-md-8 col-lg-8 scrollthis">
+                <section class="msger1" style="width:100%">
+                    <header class="msger-header  ">
+                        <div class="msger-header-title">
+                            <i class="fas fa-comment-alt"></i> ChatBox
+                        </div>
+                        <div class="msger-header-options">
+                            <span><button class="minibutton">_</button> @*<i class="fas fa-cog"></i>*@</span>
+                        </div>
+                    </header>
+                </section>
+                <section class="msger msgerchat" style="width:100%">
+
+                    <main class="msger-chat" id="chatBoxView">
+                        @if (Model.Messages.Count > 0)
+                        {
+                            foreach (var msg in Model.Messages)
+                            {
+                                if (msg.Email.Equals("vendor"))
+                                {
+
+                                    <div class="msg left-msg">
+                                        <div class="msg-img"
+                                             style="        background-image: url('@ViewBag.VendorImg')"></div>
+                                        <div class="msg-bubble">
+                                            <div class="msg-info">
+                                                <div class="msg-info-name">@msg.Name</div>
+                                                <div class="msg-info-time">@msg.RecievedTime</div>
+                                            </div>
+                                            <div class="msg-text">
+                                                @msg.Message
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                if (msg.Email.Equals("admin"))
+                                {
+
+                                    <div class="msg right-msg">
+                                        <div class="msg-img"
+                                             style="        background-image: url('/Content/Images/PFPPCZVN004HK.png')"></div>
+                                        <div class="msg-bubble">
+                                            <div class="msg-info">
+                                                <div class="msg-info-name">@msg.Name</div>
+                                                <div class="msg-info-time">@msg.RecievedTime</div>
+                                            </div>
+                                            <div class="msg-text">
+                                                @msg.Message
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+                        }
+                    </main>
+
+                    <form class="msger-inputarea">
+                        <input type="text" class="msger-input" placeholder="Enter your message...">
+                        <button type="submit" onclick="sendmsg()" class="msger-send-btn">Send</button>
+                    </form>
+                </section>
+
+            </div>
+
+
+        </div>
+        <!-- <-----------------------------------------------------------Small inbox--------------------------------------------------------->
+
+    </div>
+    <!-- <-----------------------------------------------------------Box--------------------------------------------------------->
+    <!-- <----------------------------------------------------------- Large Inbox--------------------------------------------------------->
+
+    <div class="col-md-2 col-lg-2">
+
+
+        <div class="cardbox text-center">
+            <table class="table table-striped align-center" style="width: 100%" id="dtTb2">
+                <tr style="background-color:#3C8DBC;color:#ffffff">
+
+                    <th style="text-align:center" colspan="3">Booked Jobs Notification</th>
+                </tr>
+
+                @foreach (var i in Model.Notifications.Where(x => x.Description.Contains("create")))
+                {
+
+                    <tr>
+                        <td class="text cut-text-td" style="height:40px">
+                            @Html.ActionLink(i.Description, "Read", "Notifications", new { area = "", id = i.Id }, null)
+                        </td>
+                    </tr>
+
+                }
+
+            </table>
+        </div>
+
+    </div>
+    <div class="col-md-2 col-lg-2 ">
+
+        <div class="cardbox text-center">
+            <table class="table table-striped" style="width: 100%" id="dtTb3">
+                <tr style="background-color:#3C8DBC;color:#ffffff">
+
+                    <th style="text-align:center" colspan="3">Amended Jobs Notification</th>
+                </tr>
+
+                @foreach (var i in Model.Notifications.Where(x => x.Description.Contains("amend")))
+                {
+
+                    <tr>
+                        <td class="text cut-text-td" style="height:40px">
+                            @Html.ActionLink(i.Description, "Read", "Notifications", new { area = "", id = i.Id }, null)
+                        </td>
+                    </tr>
+
+                }
+
+            </table>
+        </div>
+    </div>
+    <div class="col-md-2 col-lg-2 ">
+       <div class="cardbox text-center">
+            <table class="table table-striped align-center" style="width: 100%" id="dtTb2">
+                <tr style="background-color:#3C8DBC;color:#ffffff">
+
+                    <th style="text-align:center" colspan="3">Cancelled Jobs Notification</th>
+                </tr>
+
+                @foreach (var i in Model.Notifications.Where(x => x.Description.Contains("cancel")))
+                {
+
+                    <tr>
+                        <td class="text cut-text-td" style="height:40px">
+                            @Html.ActionLink(i.Description, "Read", "Notifications", new { area = "", id = i.Id }, null)
+                        </td>
+                    </tr>
+
+                }
+
+            </table>
+        </div>
+
+    </div>
+    <!-- <----------------------------------------------------------- Large Inbox--------------------------------------------------------->
+
+</div>
+<br />
+<br />
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script>
+    const msgerForm = get(".msger-inputarea");
+    const msgerInput = get(".msger-input");
+    const msgerChat = get(".msger-chat");
+    const vndID = get(".cvendor-ID");
+    msgerChat.scrollTop = msgerChat.scrollHeight;
+
+    var callFlag = "";
+
+
+    $(document).ready(function () {
+        myAjaxCall();
+        window.setInterval(function () {
+            myAjaxCall();
+            myAjaxCall2();
+        }, 10000);
+        callFlag = true;
+    });
+
+        function myAjaxCall() {
+        console.log(`Call Flag Value :: ${callFlag}`)
+        if (callFlag) {
+          $.ajax({
+            type: "GET",
+            url:'@Url.Action("VendorChats", "Dashboard")',
+            data: null,
+              success: function (e) {
+                  var node = document.getElementById('vendorChats').innerHTML;
+                  node = node.replace('\n', '');
+                  node = node.replace(/\s+/g, '');
+                  var ee = e.replace(/\s+/g, '');
+
+                  if (node === ee) {
+                      console.log("Vendors same");
+                  }
+                  else {
+                      console.log("Vendors not same");
+                      var audio = new Audio('../../../../assets/sounds/notif_newjob.mp3');
+                      audio.play();
+                      $('#vendorChats').html(e)
+                      msgerChat.scrollTop = msgerChat.scrollHeight;
+                  }
+
+            },
+            error: function (e) { console.log("nope" + e); }
+
+          });
+
+        }
+    }
+
+    function myAjaxCall2() {
+        console.log(`Call Flag Value :: ${callFlag}`)
+        if (callFlag) {
+          $.ajax({
+            type: "GET",
+            url:'@Url.Action("VendorChatDetails", "Dashboard")',
+            data: null,
+              success: function (e) {
+                  var node = document.getElementById('chatBoxView').innerHTML;
+                  node = node.replace('\n', '');
+                  node = node.replace(/\s+/g, '');
+                  var ee = e.replace(/\s+/g, '');
+
+                  if (node === ee) {
+                      console.log("Chat same");
+                  }
+                  else {
+                      console.log("Chat not same");
+                     $('#chatBoxView').html(e);
+                      msgerChat.scrollTop = msgerChat.scrollHeight;
+                  }
+            },
+            error: function (e) { console.log("nope" + e); }
+
+          });
+
+        }
+    }
+
+   
+    // Icons made by Freepik from www.flaticon.com
+    const BOT_IMG = "@ViewBag.VendorImg";
+    var PERSON_IMG = "/Content/Images/PFPPCZVN004HK.png";
+    const BOT_NAME = "@ViewBag.VName";
+    const PERSON_NAME = "Haroon";
+
+    msgerForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const msgText = msgerInput.value;
+        if (!msgText) return;
+
+        appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
+        msgerInput.value = "";
+        setTimeout(function () {
+            callFlag = true;
+        }, 5000);
+    });
+
+
+    function appendMessage(name, img, side, text) {
+        //   Simple solution for small apps
+        const msgHTML = `
+    <div class="msg ${side}-msg">
+      <div class="msg-img" style="background-image: url(${img})"></div>
+
+      <div class="msg-bubble">
+        <div class="msg-info">
+          <div class="msg-info-name">${name}</div>
+          <div class="msg-info-time">sending</div>
+        </div>
+
+        <div class="msg-text">${text}</div>
+      </div>
+    </div>
+  `;
+
+        msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+        msgerChat.scrollTop += 500;
+    }
+
+    // Utils
+    function get(selector, root = document) {
+        return root.querySelector(selector);
+    }
+
+    function formatDate(date) {
+        const h = "0" + date.getHours();
+        const m = "0" + date.getMinutes();
+
+        return `${h.slice(-2)}:${m.slice(-2)}`;
+    }
+
+    function random(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+
+function sendmsg()
+{
+    callFlag = false;
+    console.log(`Call Flag Value :: ${callFlag}`)
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SendMessage", "Dashboard")',
+            data: {
+                msg: msgerInput.value,
+                vid: vndID.value
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result.success) {
+                    msgerInput.value = "";
+                }
+                else {
+                    alert("Chat box is empty.");
+                }
+
+            },
+                error: function(result) {
+                    alert("Error.");
+                }
+
+
+        })
+}
+    $(".minibutton").click(function () {
+        if ($(this).html() == "_") {
+            $(this).html("+");
+            //$(this).css({
+            //    "height" : "calc(100 % - 50px)"
+            //    });
+        }
+        else {
+            $(this).html("_");
+        }
+        $(".msgerchat").slideToggle();
+    });
+
+</script>

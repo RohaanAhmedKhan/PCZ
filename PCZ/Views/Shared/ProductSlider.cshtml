@@ -1,0 +1,95 @@
+﻿@model PCZ.ViewModels.ProductViewModel
+
+<head>
+    <link href="~/assets/ProductSlider.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.6.0/tiny-slider.css" rel="stylesheet" />
+</head>
+<div class="c-product-tray">
+
+    <div class="o-wrapper">
+
+        <h2 class="c-product-tray__heading " style="color:black;font-weight:bold;">OUR PRODUCTS</h2><!-- /c-product-tray__heading -->
+
+        <div class="c-product-tray__carousel mt-16">
+
+            <div class="o-slider-product-tray">
+
+                <div class="o-slider-product-tray__controls js-controls">
+
+                    <button class="o-slider-product-tray__button o-slider-product-tray__button--prev">
+                        
+                            <svg class="o-slider-product-tray__arrow o-slider-product-tray__arrow--prev"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="-44 40.7 11 21.1">
+                                <path d="M-33.5 61.8L-44 51.3l10.5-10.6.5.5-10.1 10.1 10.1 10z" />
+                            </svg><!-- /o-slider-product-tray__arrow -->
+                    </button><!-- /o-slider-product-tray__button -->
+
+                    <button class="o-slider-product-tray__button o-slider-product-tray__button--next">
+                        <svg class="o-slider-product-tray__arrow o-slider-product-tray__arrow--next"
+                             xmlns="http://www.w3.org/2000/svg"
+                             viewBox="-44 40.7 11 21.1">
+                            <path d="M-33.5 61.8L-44 51.3l10.5-10.6.5.5-10.1 10.1 10.1 10z" />
+                        </svg><!-- /o-slider-product-tray__arrow -->
+                    </button><!-- /o-slider-product-tray__button -->
+
+                </div><!-- /o-slider-product-tray__controls -->
+
+
+                <ul class="o-slider-product-tray__inner js-slider-product-tray">
+                    @foreach (var product in Model.products)
+                    {
+                        <li class="o-slider-product-tray__slide" >
+
+                            <div class="c-product-tile">
+                                <img  class="c-product-tile__image" src="@product.ImagePath" height="250" width="250">
+                                <h3 style="color:black; font-weight:bold;" class="c-product-tile__name">@product.Name</h3>
+                                <span style="color:black;"  class="c-product-tile__price">@product.Description</span>
+                                <div style="color:black;" class="c-product-tile__price ">Condition : @product.Condition</div>
+                                <div style="color:black;" class="c-product-tile__price">Remaining : @product.Quantity         </div>
+                                <div style="color:black;" class="c-product-tile__price">Available Colors :  @product.Color</div>
+                                <h3 style="color:black; font-weight:bold;" class="c-product-tile__name">Price :  £@product.Price</h3>
+
+                            </div><!-- /c-product-tile -->
+
+                        </li><!-- /o-slider-product-tray__slide -->
+
+                    }
+
+                </ul><!-- /o-slider-product-tray__inner -->
+
+            </div><!-- /o-slider-product-tray -->
+
+        </div><!-- /c-product-tray__carousel -->
+
+    </div><!-- /o-wrapper -->
+
+</div><!-- /c-product-tray -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.6.0/min/tiny-slider.js"></script>
+<script>
+    var slider = tns({
+        arrowKeys: true,
+        autoplay: false,
+        container: ".js-slider-product-tray",
+        controls: true,
+        controlsContainer: ".js-controls",
+        gutter: 24,
+        items: 1.2,
+        loop: false,
+        mouseDrag: true,
+        nav: false,
+        responsive: {
+            360: {
+                items: 1,
+            },
+            600: {
+                items: 1
+            },
+            900: {
+                items: 5
+            },
+        },
+        slideBy: "page",
+        touch: true
+    });
+</script>

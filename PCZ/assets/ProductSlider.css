@@ -1,0 +1,141 @@
+﻿/*
+ * Pen Resets
+ */
+.c-product-tile img {
+    /*max-width: 100%;
+    height: auto;*/
+    /*    float: left;*/
+    width: 200px;
+    height: 200px;
+    /* object-fit: cover;*/
+    overflow: hidden;
+}
+.c-product-tray {
+    font-size: 14px;
+    line-height: 1.71428571;
+}
+/**
+ * Content Wrapper
+ */
+.o-wrapper {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+/**
+ * Slider Product Trays
+ */
+.o-slider-product-tray {
+    position: relative;
+}
+
+.o-slider-product-tray__inner {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.o-slider-product-tray__slide {
+    list-style: none;
+    
+}
+/**
+ * Slider Controls
+ *
+ * 1. Vertically centre arrows with the product image.
+ */
+.o-slider-product-tray__controls {
+    display: none;
+}
+
+@media screen and (min-width: 900px) {
+    .o-slider-product-tray__controls {
+        display: block;
+    }
+}
+
+.o-slider-product-tray__button {
+    appearance: none;
+    border-width: 0;
+    background-color: transparent;
+    cursor: pointer;
+    margin-top: -40px;
+    /* [1] */
+    position: absolute;
+    top: 50%;
+}
+
+    .o-slider-product-tray__button:focus {
+        outline: 0;
+    }
+
+    .o-slider-product-tray__button[disabled] {
+        cursor: default;
+    }
+
+.o-slider-product-tray__button--prev {
+    left: -24px;
+}
+
+.o-slider-product-tray__button--next {
+    right: -24px;
+}
+
+.o-slider-product-tray__arrow {
+    display: inline-block;
+    fill: #aaa;
+    height: 24px;
+    width: 24px;
+}
+
+    .o-slider-product-tray__arrow:hover {
+        fill: #222;
+    }
+
+.o-slider-product-tray__button[disabled] .o-slider-product-tray__arrow {
+    fill: #ddd;
+}
+
+.o-slider-product-tray__arrow--next {
+    transform: scaleX(-1);
+}
+/**
+ * Product Trays
+ */
+.c-product-tray {
+    margin-top: 96px;
+    margin-bottom: 96px;
+}
+
+.c-product-tray__heading {
+    font-size: 28px;
+    line-height: 1.1428571429;
+    margin-bottom: 24px;
+    text-align: center;
+}
+/**
+ * Product Tiles
+ */
+.c-product-tile__image {
+    margin-bottom: 8px;
+}
+
+.c-product-tile__name {
+    font-size: 14px;
+    line-height: 1.7142857143;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.c-product-tile__promo {
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    line-height: 1;
+    padding: 4px;
+    position: absolute;
+    top: 0;
+    left: 0l;
+}

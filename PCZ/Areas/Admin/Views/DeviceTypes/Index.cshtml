@@ -1,0 +1,138 @@
+﻿@model PCZ.ViewModels.DeviceTypesVM
+@{
+    ViewBag.Title = "Device Types";
+}
+<div class="row">
+
+    <div class="col-xs-10 col-sm-7 col-lg-4 col-md-5" style="float:none !important; margin:0 auto !important">
+
+        @if (Model.Action == 1) {
+
+
+
+            if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+
+        using (Html.BeginForm("Update", "DeviceTypes", FormMethod.Post, new { })) {
+            <div class="div-section">
+                <div class="div-section-heading"><h4>Edit Device Type</h4></div>
+
+                <div class=" div-section-body">
+
+                    <table class="table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <h4>Details</h4>
+                                </td>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr class="ftco-animate">
+                                <td><label>Id</label></td>
+                                <td><input type="text" name="DeviceType.Id" value="@Model.DeviceType.Id" disabled class="form-control ftco-animate" required /></td>
+                            </tr>
+                            <tr class="ftco-animate">
+                                <td><label>Name</label></td>
+                                <td><input type="text" name="DeviceType.Name" value="@Model.DeviceType.Name" class="form-control ftco-animate" required /></td>
+                            </tr>
+
+
+                            <tr class="ftco-animate">
+                                <td>
+                                    <input type="hidden" name="DeviceType.Id" value="@Model.DeviceType.Id" />
+                                </td>
+                                <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        }
+
+
+    }
+    else {
+
+
+        if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+    using (Html.BeginForm("Create", "DeviceTypes", FormMethod.Post, new { })) {
+        <div class="div-section">
+
+            <div class="div-section-heading"><h4>Add New Device Type</h4></div>
+
+            <div class="div-section-body">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <h4>Details</h4>
+                            </td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr class="ftco-animate">
+                            <td><label>Name</label></td>
+                            <td><input type="text" name="DeviceType.Name" class="form-control ftco-animate" required /></td>
+                        </tr>
+
+                        <tr class="ftco-animate">
+                            <td></td>
+                            <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    }
+
+}
+    </div>
+
+</div>
+
+<div class="div-section">
+
+    <div class="div-section-heading" style="display:flex; justify-content:space-between">
+        <h4>Device Types List</h4>
+        <h4 style="float:right"><a class="btn-primary" href="~/Admin/DeviceTypes/">Create New</a></h4>
+    </div>
+
+
+    <div class="row div-body">
+        <div class="col-sm-12">
+
+            <table class="table table-striped table-bordered table-responsive table-hover order-column" id="dtTbl">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dt in Model.DeviceTypes) {
+                        <tr>
+                            <td>@dt.Id</td>
+                            <td>@dt.Name</td>
+                            <td><a href="~/admin/DeviceTypes/index?act=1&id=@dt.Id">Edit</a> Delete</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>

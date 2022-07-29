@@ -1,0 +1,64 @@
+﻿@model IEnumerable<PCZ.Models.Messages>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="div-section">
+
+    <div class="div-section-heading" style="display:flex; justify-content:space-between">
+        <h4>Messages</h4>
+        <h4 style="margin-right:3px">Unread: @Model.Where( m => !m.IsRead).Count() </h4>
+    </div>
+
+    <div class="row div-body">
+        <div class="col-sm-12">
+
+            <table class="table table-striped" id="dtTbl">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Recieved On
+                        </th>
+                        <th>
+                            Message
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+
+
+                        <tr style="@( !item.IsRead ? "background-color: #b2cee1; color:#034878; font-weight: bold" : "")">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RecievedTime)
+                            </td>
+                            <td class="cut-text-td">
+                                @Html.DisplayFor(modelItem => item.Message)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,368 @@
+﻿@model PCZ.ViewModels.ProductViewModel
+@{
+    ViewBag.Title = "Products";
+}
+@if (Model.Action == 1)
+{
+
+
+    @*if (Model != null && Model.ErrorMessage != null)
+    {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}*@
+
+    using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+    @Html.HiddenFor(x=>x.ID)
+    @Html.HiddenFor(z=>z.ImagePath)
+
+    <div class="div-section">
+
+        <div class="div-section-heading"><h4>Edit Product: @Model.Name</h4></div>
+
+        <div class="row div-section-body">
+            <div class="col-sm-4">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <h3>Product Details</h3>
+                            </td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr class="ftco-animate">
+                            <td><label>Name</label></td>
+                            <td>
+                                @*<input type="text" value="@Model.Name" name="Product.Name" class="form-control ftco-animate" required />*@
+                                @Html.TextBoxFor(x => x.Name, htmlAttributes: new { @class = "form-control ftco-animate" , @required = "required" })
+                            </td>
+                        </tr>
+
+                        <tr class="ftco-animate">
+                            <td><label>Description</label></td>
+                            <td>@Html.TextAreaFor(x => x.Description, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required", @cols = 100, @rows = 5 })</td>
+                        </tr>
+
+                        <tr class="ftco-animate">
+                            <td><label>Category</label></td>
+                            <td>
+                                @*@Html.DropDownList(Model.CategoryList.Where(x=>x.Selected ==true).FirstOrDefault().ToString(), Model.CategoryList, new { @class = "form-control ddSearch"})*@
+                                @Html.DropDownListFor(x => x.Category, Model.CategoryList, Model.CategoryName, new { @class = "form-control ddSearch" })
+                            </td>
+                        </tr>
+
+                        <tr class="ftco-animate">
+                            <td><label>Picture</label></td>
+                            <td>
+                                <input type="file" name="Image" id="image" accept="image/x-png,image/jpg,image/jpeg" class="form-control" onchange="validateFileType()" />
+                                *Upload picture to update, leave empty to use same
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-sm-4">
+                <table class="table table-responsive table-hover" id="tblQualifications">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <TD>
+                                <label>Available Colors </label>
+                            </TD>
+                            <TD>
+                                @*@Html.DropDownListFor(m => m.color, Model._color, Model.color, new { @class = "form-control" })*@
+                                @Html.TextBoxFor(x => x.color, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required" })
+                            </TD>
+                        </tr>
+                        <tr>
+                            <TD>
+                                <label>Condition</label>
+                            </TD>
+                            <TD>
+                                @Html.DropDownListFor(m => m.condition, Model._condition, Model.condition, new { @class = "form-control" })
+                            </TD>
+                        </tr>
+                        <tr>
+                            <TD>
+                                <label>Size</label>
+                            </TD>
+                            <TD>
+                                @Html.TextBoxFor(z => z.size, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required" })
+                            </TD>
+                        </tr>
+                        <tr class="ftco-animate">
+                            <td><label>Quantity</label></td>
+                            <td>@Html.TextBoxFor(x => x.Quantity, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required" })</td>
+                        </tr>
+                        <tr class="ftco-animate">
+                            <td><label>Price</label></td>
+                            <td>@Html.TextBoxFor(x => x.Price, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required" })</td>
+                        </tr>
+                        <tr class="ftco-animate">
+                            <td></td>
+                            <td><input type="submit" value="Update" class="form-control greenButtonEdged" /></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-4 " >
+                Old Image
+                <img style="max-width: 100%; height: auto;" src="@Model.ImagePath" alt="" />
+            </div>
+         </div>
+
+        </div>
+    }
+
+
+}
+else
+{
+
+
+    if (Model != null && Model.ErrorMessage != null)
+    {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+    using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @id = "crf" }))
+    {
+
+@*<input type="hidden" name="Product.Id" value="@Model.ID" />
+@Html.TextBoxFor(x=> x.ID, htmlAttributes: new { @class = "form-control ", @type = "Hidden" })*@
+<div class="div-section">
+
+    
+    <div class="row div-section-body">
+        <div class="col-sm-4">
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <h3>Product Details</h3>
+                        </td>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr class="ftco-animate">
+                        <td><label>Name</label></td>
+                        <td>
+                            @Html.TextBoxFor(x => x.Name, htmlAttributes: new { @class = "form-control ftco-animate" })
+                        </td>
+                    </tr>
+
+                    <tr class="ftco-animate">
+                        <td><label>Description</label></td>
+                        <td>
+                            @Html.TextAreaFor(x => x.Description, htmlAttributes: new { @class = "form-control ", @cols = 100, @rows = 5 })
+                        </td>
+                    </tr>
+
+                    <tr class="ftco-animate">
+                        <td><label>Category</label></td>
+                        <td>
+                            @Html.DropDownListFor(q => q.Category, Model.CategoryList, "Select-Category", new { @class = "form-control ddSearch"})
+                        </td>
+                    </tr>
+
+                    <tr class="ftco-animate">
+                        <td><label>Picture</label></td>
+                        <td>
+                            <input type="file" name="Image" id="image" accept="image/x-png,image/jpg,image/jpeg" class="form-control" onchange="validateFileType()" />
+                            *Upload picture to update, leave empty to use same
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-sm-4">
+            <table class="table table-responsive table-hover" id="tblQualifications">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <TD>
+                            <label>Available Colors </label>
+                        </TD>
+                        <TD>
+                            @*@Html.DropDownListFor(m => m.color, Model._color, "Select-Color", new { @class = "form-control" })*@
+                            @Html.TextBoxFor(x => x.color, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required" })
+                        </TD>
+                    </tr>
+                    <tr>
+                        <TD>
+                            <label>Condition</label>
+                        </TD>
+                        <TD>
+                            @Html.DropDownListFor(m => m.condition, Model._condition, "Select-Condition", new { @class = "form-control" })
+                        </TD>
+                    </tr>
+                    <tr>
+                        <TD>
+                            <label>Size</label>
+                        </TD>
+                        <TD>
+                            @Html.TextBoxFor(z=> z.size, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required" })
+                        </TD>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td><label>Quantity</label></td>
+                        <td>
+                            @Html.TextBoxFor(x => x.Quantity, htmlAttributes: new { @class = "form-control " })
+                        </td>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td><label>Price</label></td>
+                        <td>
+                            @Html.TextBoxFor(x => x.Price, htmlAttributes: new { @class = "form-control " })
+                        </td>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td></td>
+                        <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+    }
+}
+
+<div class="div-section">
+
+    <div class="div-section-heading" style="display:flex; justify-content:space-between">
+        <h4>Product List</h4>
+        <h4 style="float:right"><a class="btn-primary" href="~/Admin/Product/Index">Create New</a></h4>
+    </div>
+
+    <div class="row div-body">
+        <div class="col-sm-12">
+
+            <table class="table table-hover table-bordered table-responsive" id="dtTbl">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th width="13%">Description</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                        <th>Condition</th>
+                        <th>Size</th>
+                        <th>Color</th>
+                        <th>Price</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var prd in Model.products)
+                    {
+                    <tr>
+                        <td>@prd.Name</td>
+                        <td>@prd.Description</td>
+                        <td>@prd.Quantity</td>
+                        <td>@prd.Category</td>
+                        <td>@prd.Condition</td>
+                        <td>@prd.Size</td>
+                        <td>@prd.Color</td>
+                        <td>@prd.Price</td>
+                        <td style="text-align:center" width="10%">
+                            @using (Html.BeginForm("Edit", "Product", FormMethod.Get, new { @productID = prd.ID }))
+                            {
+                                <input type="hidden" name="productID" value="@prd.ID" />
+                                <button class="btn btn-info" type="submit">@*<i class="fa fa-edit"></i>*@ Edit</button>
+                            }
+                        </td>
+                        <td style="text-align:center" width="10%">
+                            @using (Html.BeginForm("Delete", "Product", FormMethod.Post, new { @prdID = prd.ID, @ID = "delete-form" }))
+                            {
+                                <input type="hidden" name="prdID" value="@prd.ID" />
+                                <button class="btn btn-danger" type="submit" id="delete_btn" OnClick="deletealert(this, event);">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js"> </script> 
+    <script>
+
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        function validateFileType(){
+            var inp = document.getElementById("image");
+            var fileName = inp.value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+                //TO DO
+            }else{
+                inp.value = null;
+                alert("Only jpg/jpeg and png files are allowed!");
+            }
+        }
+
+        function deletealert(ctl, event) {
+            // STORE HREF ATTRIBUTE OF LINK CTL (THIS) BUTTON
+            //var defaultAction = $(ctl).prop("href");
+            // CANCEL DEFAULT LINK BEHAVIOUR
+            event.preventDefault();
+            swal({
+                title: "Are you sure?",
+                text: "This product will be deleted!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel please!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        swal({ title: "Deleted!", text: "Your Product has been deleted.", type: "error", confirmButtonText: "OK!", closeOnConfirm: true },
+                            function () {          
+                                $('#delete-form').submit();
+                                $('#delete_btn').submit();
+                                return true;
+                            });
+                    }
+                });
+        }
+
+
+    </script>
+}

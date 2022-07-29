@@ -1,0 +1,658 @@
+﻿html {
+    scroll-behavior: smooth;
+}
+
+.trInput {
+}
+
+    .trInput select {
+        background: rgba(255,255,255,0.4) !important;
+        border: none;
+        position: relative;
+        display: block;
+        outline: none;
+        color: #333;
+        -webkit-box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+        box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+    }
+
+    .trInput input {
+        background: rgba(255,255,255,0.4) !important;
+        border: none;
+        position: relative;
+        display: block;
+        outline: none;
+        color: #333;
+        -webkit-box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+        box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+    }
+
+    .trInput textarea {
+        background: rgba(255,255,255,0.4) !important;
+        border: none;
+        position: relative;
+        display: block;
+        outline: none;
+        color: #333;
+        -webkit-box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+        box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+    }
+
+::-webkit-input-placeholder {
+    opacity: 0.8 !important;
+    color: #333 !important;
+}
+
+.cut-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+    white-space: nowrap;
+}
+.cut-text-td {
+    max-width: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+    white-space: nowrap;
+}
+
+/* >>Start ========================  TABLES  =========================== */
+
+.tableScroll {
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+    .tableScroll thead th {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
+        background-color: rgb(230,230,240) !important;
+    }
+
+.clk_index_table {
+    cursor: pointer;
+}
+
+    .clk_index_table td {
+        padding: 1px 1px 1px 1px;
+    }
+
+.my-scrollbar {
+    position: relative;
+    max-height: 507px;
+    overflow: auto;
+    scrollbar-track-color: transparent;
+}
+
+.tbl-wrp-scrl-y {
+    display: block;
+}
+
+.table{}
+
+.table td {
+    padding: 4px !important;
+    font-size:smaller !important;
+}
+
+    .table thead th {
+        background-color: rgba(114, 185, 228, 0.20) !important;
+    }
+
+
+/* >>End ========================  TABLES  =========================== */
+
+/* >>Start ========================  DIV SECTION  =========================== */
+
+.div-section {
+    background: white;
+    border-radius: 0px;
+    margin: 4px;
+    padding: 0px;
+    border: solid rgb(60,141,188) 1px;
+    width: 100%;
+    display: inline-block;
+    align-content: center;
+}
+
+.div-section-heading {
+    background: rgb(60,141,188);
+    align-content: center;
+    padding: 6px 2px 6px 6px;
+    border-bottom: solid black 1px;
+    color: white;
+}
+
+.div-section-body {
+    padding-left: 4px;
+    padding-right: 4px;
+    margin: 0px;
+    background-color:white;
+}
+
+.div-section h1, h2, h3, h4 {
+    margin: 0px;
+}
+
+/* >>END ========================  DIV SECTION  =========================== */
+
+
+/* >> ========================  Navbar  =========================== */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+@media screen and (max-height: 450px) {
+    .sidebar {
+        padding-top: 15px;
+    }
+
+        .sidebar a {
+            font-size: 18px;
+        }
+}
+
+
+
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+    #wrapper.toggled {
+        padding-left: 250px;
+    }
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    background-color: rgb(4,35,49);
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+.fixed-brand {
+    width: auto;
+}
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-top: 2px;
+}
+
+    .sidebar-nav li {
+        text-indent: 15px;
+        line-height: 40px;
+    }
+
+        .sidebar-nav li a {
+            display: block;
+            height: 100%;
+            width: 100%;
+            line-height: 40px;
+            font-size: 15px;
+            color: white;
+            padding-left: 40px;
+            box-sizing: border-box;
+            border-bottom: 1px solid black;
+            border-top: 1px solid rgba(255,255,255,.1);
+            transition: .4s;
+        }
+
+            .sidebar-nav li a:hover {
+
+                text-decoration: none;
+                color: #fff;
+                background: rgba(255, 255, 255, 0.2);
+                border-left: red 2px solid;
+                padding-left:50px !important;
+            }
+
+            .sidebar-nav li a:active,
+            .sidebar-nav li a:focus {
+                text-decoration: none;
+            }
+
+
+    .sidebar-nav > .sidebar-brand {
+        /*height: 65px;
+        font-size: 18px;
+        line-height: 60px;*/
+        height: 150px;
+        font-size: 22px;
+        color: white;
+        line-height: 70px;
+        text-align: center;
+        user-select: none;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+        .sidebar-nav > .sidebar-brand a {
+            color: #999999;
+        }
+
+            .sidebar-nav > .sidebar-brand a:hover {
+                color: #fff;
+                background: none;
+            }
+
+.no-margin {
+    margin: 0;
+}
+.lactive a {
+    color: rgb(92, 186, 241) !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    padding-left: 50px !important;
+    border-right: 5px solid rgba(60,141,188, 1);
+}
+    
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    .fixed-brand {
+        width: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled-2 #sidebar-wrapper {
+        width: 150px;
+    }
+
+        #wrapper.toggled-2 #sidebar-wrapper:hover {
+            width: 250px;
+        }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled-2 #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+        margin-left: -200px;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+}
+
+/* >>END ========================  Navbar  =========================== */
+
+.greenButtonEdged {
+    /*background-color: #586985;*/
+    /*background-color: #F33333;*/
+    background-color: rgba(36, 161, 205, 0.6);
+    border-radius: 3px;
+    color: white;
+}
+
+    .greenButtonEdged:hover {
+        background-color: rgba(36, 161, 205, 0.8);
+        color: white;
+    }
+
+
+
+
+body {
+    padding-top: 0px;
+    padding-bottom: 20px;
+    background:rgb(236,240,245);
+    overflow-x:hidden;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.cut-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 160px;
+    white-space: nowrap;
+}
+
+
+
+/* Start ================================ WAIT SPINNER ===============================*/
+
+#overlay {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: rgba(0,0,0,0.6);
+}
+
+.cv-spinner {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px #ddd solid;
+    border-top: 4px #2e93e6 solid;
+    border-radius: 50%;
+    animation: sp-anime 0.8s infinite linear;
+}
+
+@keyframes sp-anime {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.is-hide {
+    display: none;
+}
+
+/* End   ================================ WAIT SPINNER ===============================*/
+
+
+
+/* Start =============================== Printable Invoice ========================= */
+
+#invoice {
+    padding: 30px;
+}
+
+.invoice {
+    position:center;
+    background-color: #FFF;
+    min-height: 680px;
+    padding: 15px
+}
+
+    .invoice header {
+        padding: 10px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #3989c6
+    }
+
+    .invoice .company-details {
+        text-align: right;
+        padding-right:15px;
+    }
+
+        .invoice .company-details .name {
+            margin-top: 0;
+            margin-bottom: 0;
+            color: #3989c6;
+        }
+
+    .invoice .contacts {
+        margin-bottom: 20px
+    }
+
+    .invoice .invoice-to {
+        text-align: left
+    }
+
+        .invoice .invoice-to .to {
+            margin-top: 0;
+            margin-bottom: 0
+        }
+
+    .invoice .invoice-details {
+        text-align: right
+    }
+
+        .invoice .invoice-details .invoice-id {
+            margin-top: 0;
+            color: #3989c6
+        }
+
+    .invoice main {
+        padding-bottom: 50px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+        .invoice main .thanks {
+            margin-top: -100px;
+            font-size: 2em;
+            margin-bottom: 50px
+        }
+
+        .invoice main .notices {
+            padding-left: 6px;
+            border-left: 6px solid #3989c6
+        }
+
+            .invoice main .notices .notice {
+                font-size: 1.2em
+            }
+
+    .invoice table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-bottom: 20px;
+    }
+
+        .invoice table td, .invoice table th {
+            padding: 15px;
+            background: #eee;
+            border-bottom: 1px solid #fff
+        }
+
+        .invoice table th {
+            white-space: nowrap;
+            font-weight: 400;
+            font-size: 12px
+        }
+
+        .invoice table td h3 {
+            margin: 0;
+            font-weight: 400;
+            color: #3989c6;
+            font-size: 1.2em
+        }
+
+        .invoice table .qty, .invoice table .total, .invoice table .unit {
+            text-align: right;
+            font-size: 1.2em
+        }
+
+        .invoice table .no {
+            color: #fff;
+            font-size: 1.6em;
+            background: #3989c6
+        }
+
+        .invoice table .unit {
+            background: #ddd
+        }
+
+        .invoice table .total {
+            background: #3989c6;
+            color: #fff
+        }
+
+        .invoice table tbody tr:last-child td {
+            border: none
+        }
+
+        .invoice table tfoot td {
+            background: 0 0;
+            border-bottom: none;
+            white-space: nowrap;
+            text-align: right;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-top: 1px solid #aaa
+        }
+
+        .invoice table tfoot tr:first-child td {
+            border-top: none
+        }
+
+        .invoice table tfoot tr:last-child td {
+            color: #3989c6;
+            font-size: 1.4em;
+            border-top: 1px solid #3989c6
+        }
+
+        .invoice table tfoot tr td:first-child {
+            border: none
+        }
+
+    .invoice footer {
+        width: 100%;
+        text-align: center;
+        color: #777;
+        border-top: 1px solid #aaa;
+        padding: 8px 0;
+    }
+
+
+@media print {
+    .invoice {
+        font-size: 11px !important;
+        overflow: hidden !important
+    }
+
+        .invoice footer {
+            position: absolute;
+            bottom: 10px;
+            page-break-after: auto
+        }
+
+        .invoice > div:last-child {
+            page-break-before: auto
+        }
+}
+
+/* End  =============================== Printable Invoice ========================= */
+
+/* Start ================================ Dashboard =============================== */
+
+.dashBBox {
+    border: solid 2px;
+    border-radius: 6px;
+    text-align: center;
+    height: 180px;
+    margin: 8px 15px 8px 15px;
+    transition: background-color 0.5s ease;
+    background-color: rgba(256,256,256, 0.6);
+}
+
+
+
+    .dashBBox:hover {
+        transform: scale(1.02);
+        background-color: rgba(256,256,100, 0.8);
+        box-shadow: 5px 10px 8px rgba(0,0,0,0.2);
+    }
+
+
+.box {
+    border: solid 2px;
+    border-radius: 6px;
+    text-align: center;
+    transition: background-color 0.5s ease;
+    background-color: darkgray;
+}
+
+.boxh {
+    border: solid 2px;
+    border-radius: 6px;
+    text-align: center;
+    height: 120px;
+    transition: background-color 0.5s ease;
+    background-color: darkgray;
+}
+
+
+
+.box:hover {
+    background-color: rgba(256,256,256, 0.8);
+    box-shadow: 5px 10px 8px rgba(0,0,0,0.2);
+}
+
+
+/* END   ================================ Dashboard =============================== */

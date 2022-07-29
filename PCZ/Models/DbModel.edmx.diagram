@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="45b1e69703c049199b321160dd51bf53" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="Models.account" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.Brand" Width="1.5" PointX="3.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.Device" Width="1.5" PointX="5.5" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.DeviceType" Width="1.5" PointX="1.125" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.JobIssues" Width="1.5" PointX="11.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.Role" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.User" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
+        <AssociationConnector Association="Models.FK_account_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Models.FK_Brand_DeviceType" ManuallyRouted="false" />
+        <AssociationConnector Association="Models.FK_Device_Brand" ManuallyRouted="false" />
+        <AssociationConnector Association="Models.FK_User_Role" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Models.Issue" Width="1.5" PointX="11.625" PointY="8.375" />
+        <AssociationConnector Association="Models.FK_Issue_Device" />
+        <AssociationConnector Association="Models.FK_JobIssue_Issue" />
+        <EntityTypeShape EntityType="Models.Job" Width="1.5" PointX="7.75" PointY="5.5" />
+        <AssociationConnector Association="Models.FK_Job_Device" />
+        <AssociationConnector Association="Models.FK_JobIssue_Job" />
+        <EntityTypeShape EntityType="Models.Vendor" Width="1.5" PointX="5.25" PointY="5" />
+        <AssociationConnector Association="Models.FK_Job_Vendor" />
+        <AssociationConnector Association="Models.FK_Vendor_User" />
+        <EntityTypeShape EntityType="Models.Messages" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.Notification" Width="1.5" PointX="5.25" PointY="12.125" />
+        <AssociationConnector Association="Models.FK_Notification_User" />
+        <EntityTypeShape EntityType="Models.VendorMessage" Width="1.5" PointX="5.25" PointY="16.25" />
+        <AssociationConnector Association="Models.FK_VendorMessage_User" />
+        <EntityTypeShape EntityType="Models.AdminMessage" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.Payment" Width="1.5" PointX="10" PointY="12.5" />
+        <AssociationConnector Association="Models.FK_Payments_Table_1" />
+        <EntityTypeShape EntityType="Models.Product" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.PaymentHistory" Width="1.5" PointX="0.75" PointY="11.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

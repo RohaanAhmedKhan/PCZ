@@ -1,0 +1,248 @@
+﻿@model PCZ.ViewModels.RepairsVM
+
+@{
+    ViewBag.Title = "Book Repair";
+}
+
+<div class="row">
+
+    <div class="col-lg-9 col-md-11 col-sm-11 col-xs-8" style="float:none !important; margin:0 auto !important">
+
+
+        @using (Html.BeginForm("Book", "RepairJobs", FormMethod.Post, new { @enctype = "multipart/form-data" })) {
+            @Html.AntiForgeryToken()
+
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="div-section ">
+                    <div class="div-section-heading"><h4>Repair Details</h4></div>
+
+                    <div class=" div-section-body form-horizontal">
+
+                        <table class="table">
+                            <thead>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td><label>Category</label></td>
+                                    <td>
+                                        @Html.DropDownList("Cat", Model.CategoryList, htmlAttributes: new { @class = "form-control ddSearch", @onchange = "cascade(this, '#dvc', 'GetDevices')" })
+                                        @Html.ValidationMessageFor(model => model.Job.DeviceId, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Device</label></td>
+                                    <td>
+                                        @Html.DropDownList("Job.DeviceId", Model.DeviceList, htmlAttributes: new { @class = "form-control ddSearch", @id = "dvc", @required = "required", @onchange = "cascade(this, '#isu', 'GetIssues')" })
+                                        @Html.ValidationMessageFor(model => model.Job.DeviceId, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Issues</label></td>
+                                    <td>
+                                        @Html.DropDownList("IssuesAr", Model.IssueList, htmlAttributes: new { @class = "form-control ddSearch", @id = "isu", @multiple = "multiple", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.Job.DeviceId, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Other Issues</label></td>
+                                    <td>
+                                        @Html.TextAreaFor(model => model.Job.OtherIssue, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Job.OtherIssue, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Other Charges</label></td>
+                                    <td>
+                                        @Html.EditorFor(model => model.Job.OtherCharges, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Job.OtherIssue, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label>Note</label></td>
+                                    <td>
+                                        @Html.EditorFor(model => model.Job.Note, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Job.Note, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label>Return Date</label></td>
+                                    <td>
+                                        <input type="date" name="Job.ReturnDate" class="form-control" required />
+                                        @Html.ValidationMessageFor(model => model.Job.ReturnDate, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label>Picture</label></td>
+                                    <td>
+                                        <input type="file" name="Image" id="image" accept="image/x-png,image/jpg,image/jpeg;capture=camera" class="form-control" onchange="validateFileType()" />
+                                        <img id="image_preview" src="#" alt="No Image Selected" width="200" height="200" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+                <div class="div-section col-sm-6 col-lg-5">
+                    <div class="div-section-heading">
+                        <h4>Customer Details</h4>
+                    </div>
+                    <div class="div-section-body">
+                        <table class="table">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td><label>Name</label></td>
+                                    <td>@Html.EditorFor(m => m.Job.CustomerName, new { htmlAttributes = new { @type = "text", @class = "form-control", @required = "required" } })</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Phone</label></td>
+                                    <td>@Html.EditorFor(m => m.Job.CustomerPhone, new { htmlAttributes = new { @type = "number", @class = "form-control", @required = "required" } })</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Email</label></td>
+                                    <td>@Html.EditorFor(m => m.Job.CustomerEmail, new { htmlAttributes = new { @class = "form-control" } })</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+                <div class="div-section col-sm-6 col-lg-5">
+                    <div class="div-section-heading">
+                        <h4>Customer Payment</h4>
+                    </div>
+                    <div class="div-section-body">
+                        <table class="table">
+                            <thead></thead>
+                            <tbody>
+                                <TR>
+                                    <TD>
+                                        <label>Paid : </label>
+                                    </TD>
+                                    <TD>
+                                        @*@Html.DropDownListFor(m => m.paid, Model.paidList, "---Select---", new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.paid, Model.paidList, new { @class = "form-control" })
+                                    </TD>
+                                </TR>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-3" style="float:none !important; margin:auto !important">
+                    <input type="submit" class="greenButtonEdged form-control" value="Book Repair" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (Model.ErrorMessage != null) {
+    <br />
+    <div class="row">
+        <div class="col-sm-11" style="background-color: #FFFFCC; border:1px solid red; border-left:5px solid red; float:none !important; margin:auto !important;">
+            <p>@Model.ErrorMessage</p>
+        </div>
+    </div>
+}
+
+@if (Model.SuccessMessage != null) {
+    <br />
+    <div class="row">
+        <div class="col-sm-11" style="background-color: rgb(253,255,253); border:1px solid darkgreen; border-left:5px solid darkgreen; float:none !important; margin:auto !important;">
+            <span style="white-space: pre-wrap">@Model.SuccessMessage</span>
+        </div>
+    </div>
+}
+
+
+<script>
+    function validateFileType() {
+        var inp = document.getElementById("image");
+        var fileName = inp.value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            if (inp.files && inp.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(inp.files[0]);
+            }
+
+
+        } else {
+            inp.value = null;
+            alert("Only jpg/jpeg and png files are allowed!");
+        }
+    }
+
+    function readfile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
+        function cascade(dropdown, cascade, action) {
+            $(cascade).empty();
+            $("#overlay").fadeIn(0);
+            $.ajax({
+
+                type: 'POST',
+                url: '/Vendor/RepairJobs/'+action,
+                dataType: 'json',
+                data: { cat: dropdown.value },
+                success: function (series) {
+
+                    $.each(series, function (i, s) {
+                        $(cascade).append('<option value="' + s.Value + '" >' + s.Text + '</option>');
+                    });
+
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data ' + ex.responseText);
+                }
+
+            }).done(function() {
+                setTimeout(function(){
+                    $("#overlay").fadeOut(0);
+                },0);
+            });
+
+            return false;
+        }
+
+</script>

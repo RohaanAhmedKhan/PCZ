@@ -1,0 +1,46 @@
+﻿@model PCZ.ViewModels.VendorDashboardVM
+
+
+        @if (Model.Messages.Count > 0)
+        {
+            foreach (var msg in Model.Messages)
+            {
+                if (msg.Email.Equals("admin"))
+                {
+
+                    <div class="msg left-msg">
+                        <div class="msg-img"
+                             style="background-image: url('/Content/Images/PFPPCZVN004HK.png') "></div>
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                                <div class="msg-info-name">@msg.Name</div>
+                                <div class="msg-info-time">@msg.RecievedTime</div>
+                            </div>
+                            <div class="msg-text">
+                                @msg.Message
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (msg.Email.Equals("vendor"))
+                {
+
+                    <div class="msg right-msg">
+                        <div class="msg-img"
+                             style="background-image: url('@ViewBag.VendorImg')"></div>
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                                <div class="msg-info-name">@msg.Name</div>
+                                <div class="msg-info-time">@msg.RecievedTime</div>
+                            </div>
+                            <div class="msg-text">
+                                @msg.Message
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+        }
+  

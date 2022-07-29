@@ -1,0 +1,42 @@
+﻿@model PCZ.ViewModels.AdminDashboardVM
+
+@{
+    Layout= null;
+}
+
+<table class="table table-hover table-striped" style="text-align:center">
+    <tbody>
+        <tr style="background-color:#3C8DBC;color:#ffffff">
+
+            <th style="text-align:center" colspan="3">Messeges</th>
+        </tr>
+
+        @foreach (var i in Model.vendors)
+        {
+            if (i.IsRead)
+            {
+                <tr style="background-color: #ffffff;color: #b2cee1">
+                    <td>
+                        <i class="fas fa-user" style="font-size:30px;padding-top:0px" aria-hidden="true"></i>
+                    </td>
+                    <td class="text ">
+                        @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null)  <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>
+
+                    </td>
+                </tr>
+            }
+            if (!i.IsRead)
+            {
+                <tr style="background-color: #b2cee1;color: #034878;">
+
+                    <td>
+                        <i class="fas fa-user" style="font-size:30px;padding-top:0px" aria-hidden="true"></i>
+                    </td>
+                    <td class="text ">
+                        @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null)  <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,132 @@
+﻿@model PCZ.ViewModels.VendorsVM
+
+@{
+    ViewBag.Title = "Add Vendor";
+}
+
+
+
+@if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+@using (Html.BeginForm("Create", "Vendors", FormMethod.Post, new { enctype = "multipart/form-data", @id = "crf" })) {
+    <div class="containter">
+        <div class="row">
+            <div class="col-sm-4">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <h2>Personal Details</h2>
+                            </td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr class="ftco-animate">
+                            <td><label>First Name</label></td>
+                            <td><input type="text" name="Vendor.User.FName" class="form-control ftco-animate" required /></td>
+                        </tr>
+
+                        <tr class="ftco-animate">
+                            <td><label>Last Name</label></td>
+                            <td><input type="text" name="Vendor.User.LName" class="form-control" required /></td>
+                        </tr>
+
+
+                        <tr class="ftco-animate">
+                            <td><label>Mobile</label></td>
+                            <td><input type="text" name="Vendor.User.Phone" class="form-control" required /></td>
+                        </tr>
+
+
+                        <tr class="ftco-animate">
+                            <td><label>Picture</label></td>
+                            <td><input type="file" name="Image" required class="form-control" /></td>
+                        </tr>
+
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-sm-5">
+                <h2>Business Details</h2>
+                <table class="table table-responsive table-hover" id="tblQualifications">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>Shop Name</td>
+                            <td><input type="text" name="Vendor.BusinessName" class="form-control ftco-animate" required /></td>
+                        </tr>
+
+                        <tr>
+                            <td>Address</td>
+                            <td><input type="text" name="Vendor.Address" class="form-control ftco-animate" required /></td>
+                        </tr>
+
+                        <tr>
+                            <td>Zip Code</td>
+                            <td><input type="text" name="Vendor.PostalCode" class="form-control ftco-animate" required /></td>
+                        </tr>
+                        <tr>
+                            <td>Business Phone</td>
+                            <td><input type="text" name="Vendor.BusinessPhone" class="form-control ftco-animate" required /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-sm-3">
+                <h2>Login Details</h2>
+                <table class="table table-responsive table-hover">
+                    <thead><tr><th></th></tr></thead>
+                    <tr class="ftco-animate">
+                        <td><label>Email</label></td>
+                        <td><input type="email" name="email" required class="form-control" /></td>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td><label>Password</label></td>
+                        <td><input type="text" name="pass" required class="form-control" /></td>
+                    </tr>
+
+                    <tr class="ftco-animate">
+                        <td></td>
+                        <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function () {
+            $("#crf").submit(function () {
+
+                var regex = /^\w+([\.-]?\w+)*@('@')\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                if (!regex.test($("#username").val())){
+                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Invalid Email!', });
+                    return (false)
+                }
+            });
+        });
+
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+}

@@ -1,0 +1,27 @@
+﻿@model PCZ.ViewModels.RepairsVM
+@{
+    ViewBag.Title = "Cancel";
+}
+
+
+@if (Model.ErrorMessage != null) {
+    <br />
+    <div class="row" >
+        <div class="col-sm-11" style="min-height:50px; display:flex; align-items:center; justify-content:center; background-color: #FFFFCC; border:1px solid red; border-left:5px solid red; float:none !important; margin:auto !important;">
+            <p><label>@Model.ErrorMessage</label></p>
+        </div>
+    </div>
+}
+
+@if (Model.SuccessMessage != null) {
+    <br />
+    <div class="row" >
+        <div class="col-sm-11" style="min-height:50px; display:flex; align-items:center; background-color: rgb(253,255,253); border:1px solid darkgreen; border-left:5px solid darkgreen; float:none !important; margin:auto !important;">
+            <span style="white-space: pre-wrap"><label>@Model.SuccessMessage</label></span>
+        </div>
+    </div>
+}
+
+@if (Model.Job != null) {
+    Html.RenderPartial("_InvoicePartial", Model.Job);
+}

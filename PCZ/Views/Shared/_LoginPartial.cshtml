@@ -1,0 +1,32 @@
+﻿@if (Request.IsAuthenticated) {
+    using (Html.BeginForm("logout", "session", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right m-auto">
+            <li class="nav-item" style="padding-top:3px">
+                @{
+
+                    var name = HttpContext.Current.User.Identity.Name;
+
+                    var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+                    if (authCookie != null) {
+                        var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                        var data = authTicket.UserData.Split('|');
+                        name = data[0];
+
+                        <img src="@data[1]" style="border-radius:100px" height="45" width="45" />
+                    }
+
+                    <label style="color:#46B7DE; padding-top:10px">@name</label>
+                }
+
+            </li>
+            <li class=""><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link" style="color:#46B7DE; padding-top:10px">Log Out</a></li>
+        </ul>
+    }
+}
+else {
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Log in", "login", "session", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link pl-0" , id = "loginLink", @style = "color:#46B7DE; padding-top:10px" })</li>
+    </ul>
+}

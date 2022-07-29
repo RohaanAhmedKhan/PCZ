@@ -1,0 +1,43 @@
+﻿@model PCZ.ViewModels.BrandsVM
+@{
+    ViewBag.Title = "Create Brand";
+}
+
+@if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+@using (Html.BeginForm("Create", "Brands", FormMethod.Post, new { })) {
+    <div class="div-section">
+
+        <div class="div-section-heading"><h4>Add New Brand</h4></div>
+
+        <div class="div-section-body">
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <h4>Details</h4>
+                        </td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr class="ftco-animate">
+                        <td><label>Name</label></td>
+                        <td>@Html.EditorFor(m => m.Brand.Name)</td>
+                       </tr>
+                    <tr>
+                        <td><label>Category</label></td>
+                        <td>@Html.DropDownListFor(m => m.Brand.TypeId, Model.CategoryList)</td>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td></td>
+                        <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

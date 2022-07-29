@@ -1,0 +1,50 @@
+﻿@model PCZ.ViewModels.DeviceTypesVM
+@{
+    ViewBag.Title = "Update";
+}
+
+
+@if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+
+@using (Html.BeginForm("Update", "DeviceTypes", FormMethod.Post, new { })) {
+
+    <div class="div-section">
+        <div class="div-section-heading"><h4>Edit Device Type</h4></div>
+
+        <div class=" div-section-body">
+
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <h4>Details</h4>
+                        </td>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr class="ftco-animate">
+                        <td><label>Id</label></td>
+                        <td><input type="text" name="DeviceType.Id" value="@Model.DeviceType.Id" disabled class="form-control ftco-animate" required /></td>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td><label>Name</label></td>
+                        <td><input type="text" name="DeviceType.Name" value="@Model.DeviceType.Name" class="form-control ftco-animate" required /></td>
+                    </tr>
+
+                    <tr class="ftco-animate">
+                        <td></td>
+                        <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}
+
+

@@ -1,0 +1,398 @@
+﻿@model PCZ.ViewModels.VendorsVM
+@{
+    ViewBag.Title = "Vendors";
+}
+
+@if (Model.Action == 1) {
+
+
+    if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+    using (Html.BeginForm("Update", "Vendors", FormMethod.Post, new { enctype = "multipart/form-data", @id = "crf" })) {
+
+
+        <input type="hidden" name="Vendor.Id" value="@Model.Vendor.Id" />
+        <input type="hidden" name="Vendor.User.Id" value="@Model.Vendor.Id" />
+
+        <div class="div-section">
+            
+            <div class="div-section-heading"><h4>Edit Vendor: @Model.Vendor.BusinessName</h4></div>
+
+            <div class="row div-section-body">
+                <div class="col-sm-4">
+                    <table class="table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <h3>Personal Details</h3>
+                                </td>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr class="ftco-animate">
+                                <td><label>First Name</label></td>
+                                <td><input type="text" value="@Model.Vendor.User.FName" name="Vendor.User.FName" class="form-control ftco-animate" required /></td>
+                            </tr>
+
+                            <tr class="ftco-animate">
+                                <td><label>Last Name</label></td>
+                                <td><input type="text" value="@Model.Vendor.User.LName" name="Vendor.User.LName" class="form-control" required /></td>
+                            </tr>
+
+
+                            <tr class="ftco-animate">
+                                <td><label>Mobile</label></td>
+                                <td><input type="text" value="@Model.Vendor.User.Phone" name="Vendor.User.Phone" class="form-control" required /></td>
+                            </tr>
+
+
+                            <tr class="ftco-animate">
+                                <td><label>Picture</label></td>
+                                <td>
+                                    <input type="file" name="Image" id="image" accept="image/x-png,image/jpg,image/jpeg" class="form-control" onchange="validateFileType()"/>
+                                    *Upload picture to update, leave empty to use same
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-sm-4">
+                    <h3>Business Details</h3>
+                    <table class="table table-responsive table-hover" id="tblQualifications">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>Shop Name</td>
+                                <td><input type="text" value="@Model.Vendor.BusinessName" name="Vendor.BusinessName" class="form-control ftco-animate" required /></td>
+                            </tr>
+
+                            <tr>
+                                <td>Address</td>
+                                <td><input type="text" value="@Model.Vendor.Address" name="Vendor.Address" class="form-control ftco-animate" required /></td>
+                            </tr>
+
+                            <tr>
+                                <td>Zip Code</td>
+                                <td><input type="text" value="@Model.Vendor.PostalCode" name="Vendor.PostalCode" class="form-control ftco-animate" required /></td>
+                            </tr>
+                            <tr>
+                                <td>Business Phone</td>
+                                <td><input type="text" value="@Model.Vendor.BusinessPhone" name="Vendor.BusinessPhone" class="form-control ftco-animate" required /></td>
+                            </tr>
+                            <tr>
+                                <td>Unique Code</td>
+                                <td><input type="text" disabled value="@Model.Vendor.PersonalCode" name="Vendor.BusinessPhone" class="form-control ftco-animate" required /></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-sm-4">
+                    <h3>Login Details</h3>
+                    <table class="table table-responsive table-hover">
+                        <thead><tr><td></td></tr></thead>
+                        <tr class="ftco-animate">
+                            <td><label>Email</label></td>
+                            <td><input disabled value="@Model.Vendor.User.account.email" type="email" name="email" required class="form-control" /></td>
+                        </tr>
+                        <tr class="ftco-animate">
+                            <td><label>Password</label></td>
+                            <td><input disabled value="123456789" type="password" name="pass" required class="form-control" /></td>
+                        </tr>
+
+                        <tr class="ftco-animate">
+                            <td></td>
+                            <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+}
+else {
+
+
+    if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+using (Html.BeginForm("Create", "Vendors", FormMethod.Post, new { enctype = "multipart/form-data", @id = "crf" })) {
+    <div class="div-section">
+
+        <div class="div-section-heading"><h4>Add new vendor</h4></div>
+
+        <div class="row div-section-body">
+            <div class="col-xs-10 col-sm-7 col-lg-5 col-md-5">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <h4>Personal Details</h4>
+                            </td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr class="ftco-animate">
+                            <td><label>First Name</label></td>
+                            <td><input type="text" name="Vendor.User.FName" class="form-control ftco-animate" required /></td>
+                        </tr>
+
+                        <tr class="ftco-animate">
+                            <td><label>Last Name</label></td>
+                            <td><input type="text" name="Vendor.User.LName" class="form-control" required /></td>
+                        </tr>
+
+
+                        <tr class="ftco-animate">
+                            <td><label>Mobile</label></td>
+                            <td><input type="text" name="Vendor.User.Phone" class="form-control" required /></td>
+                        </tr>
+
+
+                        <tr class="ftco-animate">
+                            <td><label>Picture</label></td>
+                            <td><input type="file" name="Image" id="image" accept="image/x-png,image/jpg,image/jpeg" required class="form-control" onchange="validateFileType()" /></td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-xs-10 col-sm-7 col-lg-4 col-md-5">
+
+                <table class="table table-responsive table-hover" id="tblQualifications">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td><h4>Business Details</h4></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td><label>Shop Name</label></td>
+                            <td><input type="text" name="Vendor.BusinessName" class="form-control ftco-animate" required /></td>
+                        </tr>
+
+                        <tr>
+                            <td><label>Address</label></td>
+                            <td><input type="text" name="Vendor.Address" class="form-control ftco-animate" required /></td>
+                        </tr>
+
+                        <tr>
+                            <td><label>Zip Code</label></td>
+                            <td><input type="text" name="Vendor.PostalCode" class="form-control ftco-animate" required /></td>
+                        </tr>
+                        <tr>
+                            <td><label>Business Phone</label></td>
+                            <td><input type="text" name="Vendor.BusinessPhone" class="form-control ftco-animate" required /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-xs-10 col-sm-7 col-lg-3 col-md-5">
+
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td><h4>Login Details</h4></td>
+                        </tr>
+                    </thead>
+                    <tr class="ftco-animate">
+                        <td><label>Email</label></td>
+                        <td><input type="email" id="username" name="email" required class="form-control" /></td>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td><label>Password</label></td>
+                        <td><input type="text" name="pass" required class="form-control" /></td>
+                    </tr>
+
+                    <tr class="ftco-animate">
+                        <td></td>
+                        <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+}
+
+}
+
+
+    <div class="div-section">
+
+        <div class="div-section-heading" style="display:flex; justify-content:space-between">
+            <h4>Vendors List</h4>
+            <h4 style="float:right"><a class="btn-primary" href="~/Admin/Vendors/">Create New</a></h4>
+        </div>
+
+        <div class="row div-body">
+            <div class="col-sm-12">
+
+                <table class="table table-hover table-bordered table-responsive" id="dtTbl">
+                    
+                    <thead>
+                        <tr>
+                            <th>Edit</th>
+                            <th width="15%">Business Name</th>
+                            <th width="13%">User Name</th>
+                            <th>Zip Code</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>Vendor Code</th>
+                            <th>Status</th>
+                            <th>Jobs </th>
+                            <th>Payments</th>
+                            @*<th>Cancels</th>*@
+                            @*<th>Refunds</th>*@
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var vendor in Model.Vendors) {
+                            string dtl = "/Admin/Vendors/Jobs/?VendorId=" + vendor.Id;
+                            string status = (!vendor.User.account.active).ToString();
+
+                        <tr data-href="@dtl" class="" style="@( !vendor.User.account.active ? "background-color: lightgrey;" : "")">
+                            <td width="5%" style="text-align:center;">
+                                <a href="~/admin/vendors/index?act=1&id=@vendor.Id">Edit</a>
+                            </td>
+                            <td><a href="/Admin/Vendors/Jobs/?VendorId=@vendor.Id">@vendor.BusinessName</a></td>
+                            <td>@vendor.User.FName @vendor.User.LName</td>
+                            <td>@vendor.PostalCode</td>
+                            <td>@vendor.BusinessPhone</td>
+                            <td class="">@vendor.Address</td>
+                            <td class="">@vendor.PersonalCode</td>
+                            <td class="DoNotClick" style="text-align:center" width="10%">
+                                @*@using (Html.BeginForm("AcountActive", "Vendors", FormMethod.Post, new { @onsubmit = "return confirm('Are you sure you want to "+ (vendor.User.account.active ? "Disable" : "Enable") + " this acount?');" })) {*@
+                                @using (Html.BeginForm("AcountActive", "Vendors", FormMethod.Post, new { @id = vendor.PersonalCode, @onsubmit = "" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" value="@status" name="status" />
+                                    <input type="hidden" value="@vendor.Id" name="id" />
+                                    <input type="button" class="btn-secondary" onclick="swalConfirm('Disable','@vendor.PersonalCode')" value="@(vendor.User.account.active ? "Disable" : "Enable")" />
+                                }
+                            </td>
+                            <td style="text-align:center" width="10%">
+                                @using (Html.BeginForm("JobHistory", "Vendors", FormMethod.Get, new { @id = vendor.Id }))
+                                {
+                                    <input type="hidden" name="Id" value="@vendor.Id" />
+                                    @*<button class="btn btn-info" type="submit"><i class="fas fa-external-link-square-alt"></i></button>*@
+                                    <button class="btn btn-info" type="submit">Jobs</button>
+                                }
+                            </td>
+                            <td style="text-align:center" width="10%">
+                                @using (Html.BeginForm("Index", "Payment", FormMethod.Get, new { @pid = vendor.Id }))
+                                {
+                                    <input type="hidden" name="pid" value="@vendor.Id" />
+                                    <button class="btn btn-info" type="submit">Payments</button>
+                                }
+                            </td>
+                            @*<td style="text-align:center" width="10%">
+                                @using (Html.BeginForm("VendorCancelledInvoice", "Vendors", FormMethod.Get, new { @id = vendor.Id }))
+                                {
+                                    <input type="hidden" name="Id" value="@vendor.Id" />
+                                    <button class="btn btn-danger" type="submit"><i class="fas fa-external-link-square-alt"></i> </button>
+                                }
+                            </td>*@
+                            @*<td style="text-align:center" width="10%">
+                                @using (Html.BeginForm("VendorRefundedInvoice", "Vendors", FormMethod.Get, new { @id = vendor.Id }))
+                                {
+                                    <input type="hidden" name="Id" value="@vendor.Id" />
+                                    <button class="btn btn-info" type="submit"><i class="fas fa-external-link-square-alt"></i> </button>
+                                }
+                            </td>*@
+                        </tr>
+                            }
+                        </tbody>
+                </table>
+         
+            </div>
+        </div>
+
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function () {
+            $("#crf").submit(function () {
+
+                var regex = /^\w+([\.-]?\w+)*@('@')\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                if (!regex.test($("#username").val())){
+                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Invalid Email!', });
+                    return (false)
+                }
+            });
+        });
+
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        function validateFileType(){
+            var inp = document.getElementById("image");
+            var fileName = inp.value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+                //TO DO
+            }else{
+                inp.value = null;
+                alert("Only jpg/jpeg and png files are allowed!");
+            }   
+        }
+
+        function swalConfirm(text, formId){
+
+            var con = false;
+
+            Swal.fire({
+                title: 'Confirm?',
+                text: "This acount will be "+ text + "d!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirm!'
+            }).then(result => {
+                if (result.value) {
+                    $("#"+formId).submit();
+                } else {
+                        
+                    console.log(result.dismiss)
+                }
+            })
+                
+
+            return con;
+        }
+    </script>
+}

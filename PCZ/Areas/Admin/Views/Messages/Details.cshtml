@@ -1,0 +1,79 @@
+﻿@model PCZ.ViewModels.MessagesViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="div-section">
+
+    <div class="div-section-heading"><h4>Message: </h4></div>
+
+    <div class="row div-body">
+        <div class="col-sm-12">
+            <table class="table">
+                <tr>
+                    <td>Name</td>
+                    <td>@Model.Name</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td>Time Recieved</td>
+                    <td>@Model.RecievedTime</td>
+                </tr>
+                <tr>
+                    <td>Message</td>
+                    <td>@Model.Message</td>
+                </tr>
+            </table>
+
+            @Html.ActionLink("Back to List", "Index")
+
+
+        </div>
+    </div>
+
+    <div class="row div-body">
+        <div class="col-sm-12">
+            @using (Html.BeginForm("ReplyToCustomer", "Messages", FormMethod.Post, htmlAttributes: new { @class = "Send-Email" }))
+                    {
+            <table class="table">
+                <tr>
+                    <td>Reply To Email :</td>
+                    <td>
+                        @Html.TextAreaFor(z => z.ReplyMessage, htmlAttributes: new { @class = "form-control ", @cols = 100, @rows = 5 })
+                                        @Html.HiddenFor(y => y.Name)
+                                        @Html.HiddenFor(y => y.Email)
+                                        @Html.HiddenFor(y => y.RecievedTime)
+                                        @Html.HiddenFor(y => y.Message)
+                                        @Html.HiddenFor(y => y.Id)
+                                        @Html.HiddenFor(z => z.ReplyMessage)
+                                        <button class="btn btn-primary mt-4" style="margin-top:20px;" id="b3" type="button">@*<i class="fa fa-edit"></i>*@ Send</button>
+                                    </td>
+                </tr>
+                
+            </table>
+                
+            }
+
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js"></script>
+<script>
+    document.getElementById('b3').onclick = function (e) {
+        e.preventDefault();
+        swal("Email Sent!", "The Reply of this email has been sent!", "success");
+        //swal({
+        //    title: "Email Sent!",
+        //    text: "The Reply of this email has been sent!",
+        //    type: "success"
+        //})
+        $('.Send-Email').submit();
+        return true;
+    };
+      
+</script>

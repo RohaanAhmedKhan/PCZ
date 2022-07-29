@@ -1,0 +1,327 @@
+﻿@model PCZ.ViewModels.RepairsVM
+
+@{
+    ViewBag.Title = "Edit Repair";
+}
+
+<div class="row">
+
+    <div class="col-lg-9 col-md-11 col-sm-11 col-xs-8" style="float:none !important; margin:0 auto !important">
+
+
+        @using (Html.BeginForm("Edit", "Jobs", FormMethod.Post, new { @enctype = "multipart/form-data" })) {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Job.Id)
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="div-section ">
+                    <div class="div-section-heading"><h4>Repair Details</h4></div>
+
+                    <div class=" div-section-body form-horizontal">
+
+                        <table class="table">
+                            <thead>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td><label>Category</label></td>
+                                    <td>
+                                        @Model.Job.Device.Brand.DeviceType.Name
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Device</label></td>
+                                    <td>
+                                        @Model.Job.Device.Brand.Name @Model.Job.Device.Name
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Issues</label></td>
+                                    <td>
+                                        @Html.DropDownList("IssuesAr", Model.IssueList, htmlAttributes: new { @class = "form-control ddSearch", @id = "isu", @multiple = "multiple", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.Job.DeviceId, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Other Issues</label></td>
+                                    <td>
+                                        @Html.TextAreaFor(model => model.Job.OtherIssue, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Job.OtherIssue, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>Other Charges</label></td>
+                                    <td>
+                                        @Html.EditorFor(model => model.Job.OtherCharges, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Job.OtherIssue, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label>Note</label></td>
+                                    <td>
+                                        @Html.EditorFor(model => model.Job.Note, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Job.Note, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label>Return Date</label></td>
+                                    <td>
+                                        <input type="date" name="Job.ReturnDate" value="@Model.Job.ReturnDate.Value.ToString("yyyy-MM-dd")" class="form-control" required />
+                                        @Html.ValidationMessageFor(model => model.Job.ReturnDate, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label>Picture</label></td>
+                                    <td>
+                                        <input type="file" name="Image" id="image" accept="image/x-png,image/jpg,image/jpeg;capture=camera" class="form-control" onchange="validateFileType()" />
+                                        <img id="image_preview" src="#" alt="No Image Selected" width="200" height="200" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+                <div class="div-section col-sm-6 col-lg-5">
+                    <div class="div-section-heading">
+                        <h4>Customer Details</h4>
+                    </div>
+                    <div class="div-section-body">
+                        <table class="table">
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td><label>Name</label></td>
+                                    <td>@Html.EditorFor(m => m.Job.CustomerName, new { htmlAttributes = new { @type = "text", @class = "form-control", @required = "required" } })</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Phone</label></td>
+                                    <td>@Html.EditorFor(m => m.Job.CustomerPhone, new { htmlAttributes = new { @type = "number", @class = "form-control", @required = "required" } })</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Email</label></td>
+                                    <td>@Html.EditorFor(m => m.Job.CustomerEmail, new { htmlAttributes = new {  @class = "form-control" } })</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="div-section col-sm-6 col-lg-5">
+                    <div class="div-section-heading">
+                        <h4>Job Status</h4>
+                    </div>
+                    <div class="div-section-body">
+                        <table class="table">
+                            <thead></thead>
+                            <tbody>
+                                <TR>
+                                    <TD>
+                                        <label>Status : </label>
+                                    </TD>
+                                    <TD>
+                                        <label>@ViewBag.Status</label>
+                                    </TD>
+                                </TR>
+                                <TR>
+                                    <TD>
+                                        <label>Update Status</label>
+                                    </TD>
+                                    <TD>
+                                        @Html.DropDownListFor(m => m.status, Model.statusList,  new { @class = "form-control" })
+                                    </TD>
+
+                                </TR>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--<div class="col-sm-6">
+                <div class="div-section col-sm-6 col-lg-5">
+                    <div class="div-section-heading">
+                        <h4>Payment Details</h4>
+                    </div>
+                    <div class="div-section-body">
+                        <table class="table">
+                            <thead></thead>
+                            <tbody>
+                                <TR>
+                                    <TD>
+                                        <label>Paid : </label>
+                                    </TD>
+                                    <TD>
+                                        <label>@ViewBag.Paid</label>
+                                    </TD>
+                                </TR>
+                                <TR>
+                                    <TD>
+                                        <label>Update Payment</label>
+                                    </TD>
+                                    <TD>
+                                        @Html.DropDownListFor(m => m.paid, Model.paidList, new { @class = "form-control" })
+                                    </TD>
+
+                                </TR>-->
+                                @*<tr>
+            <td><label>Total Payment Amount</label></td>
+            <td><label id="totalAmt"> @Model.payment.Payment_Amount</label> </td>
+        </tr>
+        <tr>
+            <td><label>Date Of Last  Payment Recieved</label></td>
+            <td><label id="totalAmt"> @Model.payment.DateRecieved</label> </td>
+        </tr>
+        <tr>
+            <td><label>Paid</label></td>
+            <td>@Model.payment.Paid</td>
+        </tr>
+        <tr>
+            <td><label>Recieved</label></td>
+            <td>  <label id="recAmt">  @Model.payment.Recieved_Amount </label> </td>
+        </tr>
+        <tr>
+            <td><label>Remaining</label></td>
+            <td>@Model.payment.Remaining_Amount</td>
+        </tr>
+        <tr>
+            <td><label>Enter Amount</label></td>
+            <td> @Html.EditorFor(m => m.Amount, new { htmlAttributes = new { @class = "form-control" } }) </td>
+        </tr>*@
+                            <!--</tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>-->
+
+            <input type="hidden" name="abc" value="@Model.preUrl" />
+
+        </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-3" style="float:none !important; margin:auto !important">
+                    <input type="submit" id="ssss" class="greenButtonEdged form-control" value="Update Job" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (Model.ErrorMessage != null) {
+    <br />
+    <div class="row">
+        <div class="col-sm-11" style="background-color: #FFFFCC; border:1px solid red; border-left:5px solid red; float:none !important; margin:auto !important;">
+            <p>@Model.ErrorMessage</p>
+        </div>
+    </div>
+}
+
+@if (Model.SuccessMessage != null) {
+    <br />
+    <div class="row">
+        <div class="col-sm-11" style="background-color: rgb(253,255,253); border:1px solid darkgreen; border-left:5px solid darkgreen; float:none !important; margin:auto !important;">
+            <span style="white-space: pre-wrap">@Model.SuccessMessage</span>
+        </div>
+    </div>
+}
+
+
+<script>
+
+            document.getElementById("ssss").addEventListener("click", function (event) {
+                var total = document.getElementById("totalAmt").innerHTML;
+                var amtt = document.getElementById("Amount").value;
+                var rec = document.getElementById("recAmt").innerHTML;
+                var a = (parseInt(amtt) + parseInt(rec));
+                var b = parseInt(total);
+                var c = parseInt(amtt);
+                if ((a > b) || c> b) {
+                    alert("The Amount Entered is greater then the actual Payment amount. Re Enter.");
+                    event.preventDefault();
+                }
+            });
+
+    function validateFileType() {
+        var inp = document.getElementById("image");
+        var fileName = inp.value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            if (inp.files && inp.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(inp.files[0]);
+            }
+
+
+        } else {
+            inp.value = null;
+            alert("Only jpg/jpeg and png files are allowed!");
+        }
+    }
+
+    function readfile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
+        function cascade(dropdown, cascade, action) {
+            $(cascade).empty();
+            $("#overlay").fadeIn(0);
+            $.ajax({
+
+                type: 'POST',
+                url: '/Vendor/RepairJobs/'+action,
+                dataType: 'json',
+                data: { cat: dropdown.value },
+                success: function (series) {
+
+                    $.each(series, function (i, s) {
+                        $(cascade).append('<option value="' + s.Value + '" >' + s.Text + '</option>');
+                    });
+
+                },
+
+                error: function (ex) {
+                    alert('Failed to retrieve data ' + ex.responseText);
+                }
+
+            }).done(function() {
+                setTimeout(function(){
+                    $("#overlay").fadeOut(0);
+                },0);
+            });
+
+            return false;
+    }
+
+
+</script>

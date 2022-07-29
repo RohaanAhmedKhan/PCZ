@@ -1,0 +1,126 @@
+﻿@model PCZ.ViewModels.VendorsVM
+@{
+    ViewBag.Title = "Jobs";
+  
+}
+<div class="div-section">
+    <div class="div-section-heading"><h4>Vendor Profile</h4></div>
+
+    <div class="row div-section-body">
+
+        <div class="col-lg-2">
+            <img src="@Model.Vendor.User.ImgUrl" height="150" style="margin:5px; max-width:150px; border-radius:5px" />
+            <label style="margin:0px auto">@Model.Vendor.BusinessName</label>
+        </div>
+
+        <div class="col-lg-4">
+            <table class="table">
+                <caption><label>Shop Details</label></caption>
+                <tr>
+                    <td><label>Business Name</label></td>
+                    <td>@Model.Vendor.BusinessName</td>
+                </tr>
+                <tr>
+                    <td><label>Unique Code</label></td>
+                    <td>@Model.Vendor.PersonalCode</td>
+                </tr>
+                <tr>
+                    <td><label>Phone</label></td>
+                    <td>@Model.Vendor.BusinessPhone</td>
+                </tr>
+                <tr>
+                    <td><label>Address</label></td>
+                    <td>@Model.Vendor.Address</td>
+                </tr>
+                <tr>
+                    <td><label>Zip Code</label></td>
+                    <td>@Model.Vendor.Address</td>
+                </tr>
+              
+            </table>
+  
+        </div>
+
+        <div class="col-lg-4">
+            <table class="table">
+                <caption><label>Vendor Details</label></caption>
+                <tr>
+                    <td><label>Person of Contact</label></td>
+                    <td>@Model.Vendor.User.FName @Model.Vendor.User.LName </td>
+                </tr>
+                <tr>
+                    <td><label>Phone</label></td>
+                    <td>@Model.Vendor.User.Phone</td>
+                </tr>
+                <tr>
+                    <td><label>Date Created</label></td>
+                    <td> @Model.Vendor.Date</td>
+                </tr>
+            </table>
+  
+        </div>
+    </div>
+</div>
+
+
+<div class="div-section">
+    <div class="div-section-heading"><h4>Pending & Unpaid Repairs</h4></div>
+
+    <div class="row div-section-body">
+        <div class="col-sm-12" style="padding:0 !important">
+
+            <table class="table table-striped table-bordered table-responsive" id="dtTbl">
+                <thead>
+                    <tr>
+                        <th width="10%">Invoice No</th>
+                        <th width="13%">Customer Name</th>
+                        <th width="7%">Customer Phone</th>
+                        @*<th width="15%">Customer Email</th>*@
+                        <th width="10%">Device</th>
+                        <th width="7%">Cost</th>
+                        <th width="10%">Date</th>
+                        <th width="10%">Note</th>
+                        <th width="10%">Status</th>
+                        <th width="10%">Return Date</th>
+                        <th width="7%">Edit</th>
+                        <th width="7%">View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dt in Model.Jobs.Where(j=> (j.Status != "Cancelled" && j.Paid != true) || (j.Status != "Cancelled" && j.Paid == true)))
+                        {
+                        //string dtl = "/Admin/Jobs/Details/?id=" + dt.Id; 
+                    <tr class="clk_index_table">
+                        <td>@dt.JobNo</td>
+                        <td>@dt.CustomerName</td>
+                        <td>@dt.CustomerPhone</td>
+                        @* <td>@dt.CustomerEmail</td>*@
+                        <td>@dt.Device.Brand.Name @dt.Device.Name</td>
+                        <td>@dt.TotalCost.ToString("N0")</td>
+                        <td>@dt.SubmitDate</td>
+                        <td>@dt.Note</td>
+                        <td>@dt.Status</td>
+                        <td>@dt.ReturnDate</td>
+                         <td>
+                            @using (Html.BeginForm("Edit", "Jobs", FormMethod.Get))
+                            {
+                                <input type="hidden" name="Id" value="@dt.Id" />
+                                <button class="btn btn-info" type="submit"><i class="fa fa-edit"></i></button>
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("Details", "Jobs", FormMethod.Get))
+                            {
+                                <input type="hidden" name="Id" value="@dt.Id" />
+                                <button class="btn btn-info" type="submit"><i class="fa fa-print"></i></button>
+                            }
+                        </td>
+
+                    </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

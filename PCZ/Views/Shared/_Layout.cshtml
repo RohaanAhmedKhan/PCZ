@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <!-- font awesome 5 free -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- Poppins font from Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/imgs/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/imgs/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/imgs/favicon-16x16.png">
+    <link rel="manifest" href="/assets/imgs/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/imgs/favicon.ico">
+    <meta name="msapplication-TileColor" content="#eeff0d">
+    <meta name="msapplication-config" content="/assets/imgs/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" href="/assets/app.css">
+
+    <title>Phone & Computer Zone</title>
+</head>
+
+<body>
+    <!--Offer Alert ================================ -->
+    @*<div class="offer-alert">
+            <div class="offer-alert__container container">
+                <span>Preview All Beautiful Templates &amp; UI Blocks</span> <a href="https://frontendor.com" class="offer-alert__btn">PREVIEW ALL</a>
+            </div>
+        </div>*@
+    <!--Hero ====================================== -->
+
+    <header class="hero container-fluid border-bottom" style="margin-top: 0px !important">
+        <nav class="hero-nav container px-4 px-lg-0 mx-auto">
+
+            <ul class="nav w-100 list-unstyled align-items-center p-0">
+                <li class="hero-nav__item" style="display:flex">
+                    <a href="/">
+                        <img class="" style="max-height:95px !important; max-width:95px !important" src="~/assets/imgs/logo.png">
+                    </a>
+                    <h4 style="margin: auto 5px auto 5px; font-size: 2.5vw" class="block__title"><a href="/Home/Index" style="text-decoration: none;color: inherit;">Phone & Computer Zone</a></h4>
+                </li>
+                <li id="hero-menu" class="flex-grow-1 hero__nav-list hero__nav-list--mobile-menu ft-menu">
+                    <ul class="hero__menu-content nav flex-column flex-lg-row ft-menu__slider animated list-unstyled p-2 p-lg-0">
+                        <li class="flex-grow-1">
+                            <ul class="nav nav--lg-side list-unstyled align-items-center p-0">
+                                <li class="hero-nav__item">
+                                    <a href="/Home/Index#contact-us" class="hero-nav__link notPrevent" name="Home/Index#contact-us">Contact Us</a>
+                                    
+                                </li>
+                                @*<li class="hero-nav__item">
+                                    <a href="#testimonials" class="hero-nav__link">About Us</a>
+                                </li>*@
+                                <li class="hero-nav__item">
+                                    <a href="/Home/Index#product" class="hero-nav__link notPrevent" name="Home/Index#product">Our Services</a>
+                                </li>
+                                <li class="hero-nav__item">
+                                @*    @Html.ActionLink("Our Prices", "index", "Price", new { @class = "hero-nav__link" }, null)*@
+                                    <a href="/Price/Index"class=" hero-nav__link notPrevent" name="/Price/Index">
+                                     Our Prices
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <button onclick="document.querySelector('#hero-menu').classList.toggle('ft-menu--js-show')"
+                            class="ft-menu__close-btn animated">
+                        <svg class="bi bi-x" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z"
+                                  clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z"
+                                  clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </li>
+                <li class="d-lg-none flex-grow-1 d-flex flex-row-reverse hero-nav__item">
+                    <button onclick="document.querySelector('#hero-menu').classList.toggle('ft-menu--js-show')"
+                            class="text-center px-2">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+
+
+
+    <br />
+    <br />
+    <br />
+    @RenderBody()
+    <hr />
+
+
+
+
+
+    <script src="/assets/app.js"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+
+    @RenderSection("scripts", required: false)
+
+<script>
+    $('a.notPrevent').click(function (event) {
+        window.location = this.href;
+        event.returnValue = true;
+    });
+</script>
+</body>
+
+</html>

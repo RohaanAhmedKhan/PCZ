@@ -1,0 +1,363 @@
+﻿@model PCZ.ViewModels.PaymentViewModel
+@{
+    ViewBag.Title = "Payments";
+}
+@if (Model.Action == 1)
+{
+
+
+    @*if (Model != null && Model.ErrorMessage != null)
+        {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}*@
+
+    using (Html.BeginForm("Edit", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        @Html.HiddenFor(x => x.ID)
+        @Html.HiddenFor(z => z.VendorID)
+        @Html.HiddenFor(z => z.actualBalance)
+
+        <div class="div-section">
+
+            <div class="div-section-heading"><h4>Edit Payment </h4></div>
+
+            <div class="row div-section-body">
+                <div class="col-sm-4">
+                    <table class="table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <h3>Payment_Details : @Model.VendorName</h3>
+                                </td>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr class="ftco-animate">
+                                <td><label>ID</label></td>
+                                <td>
+                                    @*<input type="text" value="@Model.Name" name="Product.Name" class="form-control ftco-animate" required />*@
+                                    @Html.TextBoxFor(x => x.ID, htmlAttributes: new { @class = "form-control ftco-animate", @readonly = "readonly", @required = "required" })
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><label>DESCRIPTION</label></td>
+                            </tr>
+                            <tr class="ftco-animate">
+                                <td>@Html.TextAreaFor(x => x.Description, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required", @cols = 100, @rows = 5 })</td>
+                            </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-sm-4">
+                    <table class="table table-responsive table-hover" id="tblQualifications">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><h4><label>Vendor Invoice Balance</label></h4> </td>
+                                <td>
+                                    <h4> <label id="invoiceBalance"> £@Model.actualBalance</label></h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><h4><label>Total Paid Amount</label></h4> </td>
+                                <td>
+                                    <h4> <label id="paidBalance"> £@Model.PaidBalance</label></h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><h4><label>Remaining Balance</label></h4> </td>
+                                <td>
+                                    <h4>  <label id="remainingBalance"> £@Model.RemainingBalance</label></h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Date</label></td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.DateOfPay, Model.DateOfPay.ToString("yyyy-MM-dd"), htmlAttributes: new { @type = "date", @class = "form-control ftco-animate" })
+                                    @Html.ValidationMessageFor(model => model.DateOfPay, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                            <tr class="ftco-animate">
+                                <td><label>Previous Amount :</label></td>
+
+                                <td>
+                                    @Html.TextBoxFor(x => x.oldAmount, htmlAttributes: new { @class = "form-control ftco-animate disable", @type = "number", @readonly = "readonly" })
+                                </td>
+                            </tr>
+                            <tr class="ftco-animate">
+                                <td><label>Enter Amount to Pay :</label></td>
+
+                                <td>
+                                    @Html.TextBoxFor(x => x.Amount, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required", @type = "number"})
+                                </td>
+                            </tr>
+                            <tr class="ftco-animate">
+                                <td></td>
+                                <td><input type="submit" id="updateBtn" value="Update" class="form-control greenButtonEdged" /></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+}
+else
+{
+
+
+    if (Model != null && Model.ErrorMessage != null)
+    {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+using (Html.BeginForm("Create", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @id = "crf" }))
+{
+    @Html.HiddenFor(z => z.VendorID)
+    <div class="div-section">
+
+        <div class="div-section-heading"><h4>Payment</h4></div>
+
+        <div class="row div-section-body">
+            <div class="col-sm-4">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <td>
+                                <h3>Payment_Details : @Model.VendorName</h3>
+                            </td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @*<tr class="ftco-animate">
+                            <td>Vendor Balance : </td>
+                            <td><label id="p_balance"> @Model.Balance </label></td>
+                        </tr>*@
+                        <tr>
+                            <td><label>DESCRIPTION</label></td>
+                        </tr>
+                        <tr class="ftco-animate">
+                            <td>@Html.TextAreaFor(x => x.Description, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required", @cols = 100, @rows = 5})</td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-sm-4">
+                <table class="table table-responsive table-hover" id="tblQualifications">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><h4><label>Vendor Invoice Balance</label></h4> </td>
+                            <td>
+                                <h4> <label id="invoiceBalance"> £@Model.actualBalance</label></h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h4><label>Total Paid Amount</label></h4> </td>
+                            <td>
+                                <h4> <label id="paidBalance"> £@Model.PaidBalance</label></h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h4><label>Remaining Balance</label></h4> </td>
+                            <td>
+                                <h4>  <label id="remainingBalance"> £@Model.RemainingBalance</label></h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Date</label></td>
+                            <td>
+                                @Html.TextBoxFor(x => x.DateOfPay, htmlAttributes: new { @type = "date", @class = "form-control ftco-animate" })
+                                @Html.ValidationMessageFor(model => model.DateOfPay, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr class="ftco-animate">
+                            <td><label>Enter Amount to Pay :</label></td>
+                            <td>
+                                @Html.TextBoxFor(x => x.Amount, htmlAttributes: new { @class = "form-control ftco-animate", @required = "required", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr class="ftco-animate">
+                            <td></td>
+                            <td><input type="submit" id="ssss" value="Save" class="form-control greenButtonEdged" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+}
+}
+
+<div class="div-section">
+
+    <div class="div-section-heading" style="display:flex; justify-content:space-between">
+        <h4>Payment List</h4>
+        <h4 style="float:right"><a class="btn-primary" href="~/Admin/Payment/Index?Id=@Model.VendorID">Create New</a></h4>
+    </div>
+
+    <div class="row div-body">
+        <div class="col-sm-12">
+
+            <table class="table table-hover table-bordered table-responsive" id="dtTbl">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th width="25%">Description </th>
+                        <th>Amount</th>
+                        <th>Date Of Payment</th>
+                        <th>BuisinessName</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var prd in Model.payments)
+                    {
+                        <tr>
+                            <td>@prd.ID</td>
+                            <td>@prd.Description</td>
+                            <td>@prd.Amount</td>
+                            <td>@prd.DateOfPayment.ToString("dd-MM-yyyy hh:mm:ss tt")</td>
+                            <td>@Model.VendorName</td>
+                            <td style="text-align:center" width="10%">
+                                @using (Html.BeginForm("Edit", "Payment", FormMethod.Get, new { @prdID = prd.ID }))
+                                {
+                                    <input type="hidden" name="prdID" value="@prd.ID" />
+                                    <button class="btn btn-info" type="submit">@*<i class="fa fa-edit"></i>*@ Edit</button>
+                                }
+                            </td>
+                            <td style="text-align:center" width="10%">
+                                @{
+                                    int ide = prd.ID;
+                                }
+                                @using (Html.BeginForm("Delete", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @prdID = prd.ID, @class = "delete-form" }))
+                                {
+                                    <input type="hidden" name="prdID" id="abc" value="@prd.ID" />
+                                    <input class="btn btn-danger" type="submit"  @*OnClick="deletealert(this, event);"*@ value="Delete" >
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js"></script>
+    <script>
+        var el = document.getElementById('ssss');
+        if (el) {
+            el.addEventListener("click", function (event) {
+                var rb = $('#remainingBalance').html();
+                rb = rb.replace('£', '');
+                var a = document.getElementById("Amount").value;
+                var remBalance = parseFloat(rb).toFixed(2);
+                var amount = parseFloat(a).toFixed(2);
+                console.log(`amount : ${amount},  rem bala ${remBalance}`)
+                if (parseFloat(amount) > parseFloat(remBalance)) {
+                    alert("The Amount Entered is greater then the remaining balance. Kindly Re Enter.");
+                    event.preventDefault();
+                }
+
+            });
+        }
+        var up = document.getElementById("updateBtn");
+        if (up) {
+            up.addEventListener("click", function (event) {
+            var rb = $('#remainingBalance').html();
+            rb = rb.replace('£', '');
+
+            var ib = $('#invoiceBalance').html();
+            ib= ib.replace('£', '');
+
+
+            var a = document.getElementById("Amount").value;
+            var oa = document.getElementById("oldAmount").value;
+
+            var remBalance = parseFloat(rb).toFixed(2);
+            var invBalance = parseFloat(ib).toFixed(2);
+            var oldAmount = parseFloat(oa).toFixed(2);
+            var amount = parseFloat(a).toFixed(2);
+
+            console.log(`amount : ${amount},  old Amount ${oldAmount}, Invoice Balance ${invBalance}, rem bala ${remBalance}`);
+
+                remBalance = (parseFloat(oldAmount) + parseFloat(remBalance)).toFixed(2);
+
+                remBalance = (parseFloat(remBalance) - parseFloat(amount)).toFixed(2);
+                
+             console.log(`amount : ${amount},  old Amount ${oldAmount}, Invoice Balance ${invBalance}, rem bala ${remBalance}`);
+                if (parseFloat(remBalance) < 0) {
+                alert("The Amount Entered is greater then the remaining balance. Kindly Re Enter.");
+                event.preventDefault();
+            }
+        });
+
+        }
+        //if (window.history.replaceState) {
+        //    window.history.replaceState(null, null, window.location.href);
+        //}
+
+        $('.delete-form').one('submit', function (e) {
+            e.preventDefault();
+
+
+            swal({
+                title: "Are you sure?",
+                text: "This payment will be deleted!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel please!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        swal({ title: "Deleted!", text: "Your payment has been deleted.", type: "error", confirmButtonText: "OK!", closeOnConfirm: true },
+                            function () {
+                                $('.delete-form').submit();
+                                return true;
+                            });
+                    }
+                });
+            
+        });
+
+     
+
+
+    </script>
+}

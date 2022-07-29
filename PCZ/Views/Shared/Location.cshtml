@@ -1,0 +1,50 @@
+﻿@model PCZ.ViewModels.ProductViewModel
+
+@*@{
+    ViewBag.Title = "Store Locations";
+}*@
+
+<div class="row px-2 pt-4">
+    @if(Model.locations != null)
+    {
+
+        foreach (var item in Model.locations)
+        {
+
+            <div class="col-lg-4 col-md-6 col-sm-8 col-10 mx-auto" style="color:black; ">
+                <div class="testimonial-card-1 mb-5" style="min-height:85%">
+
+                    <div class="block-20__person">
+                        <div class="mb-2">
+                            <img class="block-20__person-avatar" src="@item.User.ImgUrl">
+                        </div>
+
+                        <div class="flex-grow-1 d-flex flex-column">
+                            <span class="block-20__person-name my-1">@item.BusinessName</span>
+                            <span class="block-20__person-name">Zip Code:</span>
+                            <span class="block-20__person-info">@item.PostalCode</span>
+                            <span class="block-20__person-name">Contact:</span>
+                            <span class="block-20__person-info">@item.BusinessPhone</span>
+
+                            <span class="block-20__person-name">Address:</span>
+                            <span class="block-20__person-info">@item.Address</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    }
+</div>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+﻿@model PCZ.ViewModels.BrandsVM
+@{
+    ViewBag.Title = "Edit Brand";
+}
+
+
+
+
+@if (Model != null && Model.ErrorMessage != null) {<label style="color:red"><b>Error: </b> @Model.ErrorMessage</label>}
+
+
+@using (Html.BeginForm("Update", "Brands", FormMethod.Post, new { })) {
+    <div class="div-section">
+        <div class="div-section-heading"><h4>Edit Device Type</h4></div>
+
+        <div class=" div-section-body">
+
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <h4>Details</h4>
+                        </td>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr class="ftco-animate">
+                        <td><label>Id</label></td>
+                        <td><input type="text" name="Brand.Id" value="@Model.Brand.Id" disabled class="form-control ftco-animate" required /></td>
+                    </tr>
+                    <tr class="ftco-animate">
+                        <td><label>Name</label></td>
+                        <td><input type="text" name="Brand.Name" value="@Model.Brand.Name" class="form-control ftco-animate" required /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Category</label></td>
+                        <td>@Html.DropDownListFor(m => m.Brand.TypeId, Model.CategoryList)</td>
+                    </tr>
+
+                    <tr class="ftco-animate">
+                        <td>
+                            <input type="hidden" name="Brand.Id" value="@Model.Brand.Id" />
+                        </td>
+                        <td><input type="submit" value="Save" class="form-control greenButtonEdged" /></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}

@@ -1,0 +1,24 @@
+﻿@model String
+@{
+    ViewBag.Title = "Run Query";
+}
+
+<h2>RunQuery</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @using (Html.BeginForm("RunQuery", "DevOps", FormMethod.Post)) {
+
+                <input type="text" multiple name="command" />
+                <input type="submit" value="Run Query" />
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>@ViewBag.output</p>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,171 @@
+﻿@model PCZ.ViewModels.RepairsVM
+
+@{
+    ViewBag.Title = "Repair Job";
+}
+
+
+@if (Model.Success) {
+
+
+
+
+    <div class="container" style="padding:0px !important">
+        <div class="row" style="padding:0px !important">
+            <div class="col-sm-12 col-lg-11 col-xs-12" style="padding:0px !important">
+                <div id="invoice">
+
+                    <div class="toolbar row hidden-print">
+                        <div class="text-center">
+                            @if (Model.Job.Status == "Pending") {
+                            <div style="float:right;margin:5px">
+                                @using (Html.BeginForm("Edit", "Jobs", FormMethod.Get)) {
+                                    <input type="hidden" name="Id" value="@Model.Job.Id" />
+                                    <button class="btn btn-info" type="submit"><i class="fa fa-edit"></i> Edit</button>
+                                }
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="invoice overflow-auto">
+                        <div style="min-width: 400px">
+                            <main>
+                                <div class="row contacts">
+                                    <div class="col-lg-5 col-xs-5 invoice-to">
+                                        <div class="text-gray-light">INVOICE TO:</div>
+                                        <h3 class="to">@Model.Job.CustomerName</h3>
+                                        <div class="address">Phone: @Model.Job.CustomerPhone</div>
+                                        <div class="email"><a href="mailto:@Model.Job.CustomerEmail">@Model.Job.CustomerEmail</a></div>
+                                    </div>
+                                    <div class="col-lg-7 col-xs-7 invoice-details">
+                                        <h3 class="invoice-id">@Model.Job.JobNo</h3>
+                                        <div class="date">Submit Date: @Model.Job.SubmitDate</div>
+
+                                        @if (Model.Job.ReturnDate != null) {
+                                            <div class="date">Return Date: @Model.Job.ReturnDate.Value.Date.ToString("dddd, dd MMMM yyyy")</div>
+                                        }
+                                        else {
+                                            <div class="date">Return Date: - - - </div>
+                                        }
+
+                                        @{var textcolor = (Model.Job.Status == "Cancelled") ? "text-danger" : "text-info"; }
+                                        <div class="date">Status: <label class="@textcolor">@Model.Job.Status</label> </div>
+                                    </div>
+                                </div>
+
+                                <div class="row contacts">
+                                    <div class="col-lg-5 col-xs-5 invoice-to">
+                                        <div class="text-gray-light">Device Name:</div>
+                                        <h4 class="to">@Model.Job.Device.Brand.Name @Model.Job.Device.Name</h4>
+                                    </div>
+                                    <div class="col-lg-7 col-xs-7 invoice-details">
+                                        <div class="text-gray-light">Device Type:</div>
+                                        <h4 class="invoice-id">@Model.Job.Device.Brand.DeviceType.Name</h4>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <table border="0" class="table" cellspacing="0" cellpadding="0">
+                                            <thead>
+                                                <tr style="width:100% !important">
+                                                    <th width="">#</th>
+                                                    <th class="text-left" width="700">DESCRIPTION</th>
+                                                    <th class="text-left"> </th>
+                                                    <th class="text-right">Return Time </th>
+                                                    <th class="text-right">Trade Cost</th>
+                                                    <th class="text-right">Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @{
+                                                    var count = 1;
+                                                    int tradeCostTotal = 0;
+                                                    foreach (var issue in Model.Job.JobIssues)
+                                                    {
+                                                        <tr>
+                                                            <td class="no">@count</td>
+                                                            <td class="text-left" colspan="2"><h3>@issue.Issue.Description</h3></td>
+                                                            <td class="text-right" colspan="1"><h3>@issue.Issue.DeliveryTime</h3></td>
+                                                            <td class="total">@issue.Cost.ToString("N0")</td>
+                                                            <td class="total"> @issue.Issue.Price.ToString("N0")</td>
+                                                        </tr>
+                                                        count++;
+                                                        tradeCostTotal += issue.Issue.Price;
+                                                    }
+                                                    if (Model.Job.OtherCharges > 0)
+                                                    {
+                                            <tr>
+                                                <td class="no">@count</td>
+                                                <td class="text-left" colspan="2"><h3>@Model.Job.OtherIssue</h3></td>
+                                                <td class="text-right" colspan="1"><h3> </h3></td>
+                                                <td class="total">@Model.Job.OtherCharges.ToString("N0") /-</td>
+                                                <td class="total">@Model.Job.OtherCharges.ToString("N0") /-</td>
+                                            </tr>
+                                                        tradeCostTotal += Model.Job.OtherCharges;
+                                                    }
+                                                }
+                                            </tbody>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="2"></td>
+                                                    <td colspan="2">SUBTOTAL</td>
+                                                    <td>Rs. @Model.Job.TotalCost.ToString("N0") /-</td>
+                                                    <td>Rs. @tradeCostTotal.ToString("N0") /-</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="2"></td>
+                                                    <td colspan="2">GRAND TOTAL</td>
+                                                    <td>Rs. @Model.Job.TotalCost.ToString("N0") /-</td>
+                                                    <td>Rs. @tradeCostTotal.ToString("N0") /-</td>
+                                                </tr>
+
+
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                                <div class="notices">
+                                    <div>Picture:</div>
+                                    <div class="notice">
+                                        @if (!string.IsNullOrEmpty(Model.Job.ImgUrl)) {
+                                            <img src="@Model.Job.ImgUrl" alt="Picture" />
+                                        }
+                                        else {
+                                            <p>No Image</p>
+                                        }
+                                    </div>
+                                </div>
+
+                                @if (!string.IsNullOrEmpty(Model.Job.Note)) {
+                                    <div class="notices">
+                                        <div>Vendor Note:</div>
+                                        <div class="notice">
+                                            <p>@Model.Job.Note</p>
+
+                                        </div>
+                                    </div>
+                                }
+                            </main>
+
+                        </div>
+                        <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+                        <div></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+}

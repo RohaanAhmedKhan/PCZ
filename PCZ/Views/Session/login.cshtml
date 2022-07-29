@@ -1,0 +1,92 @@
+﻿@model PCZ.ViewModels.accountsVM
+@{
+    //Layout = "~/Views/Shared/_loginRegisterpageHeader.cshtml";
+    ViewBag.Title = "Login";
+}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+<br />
+@if (Request.IsAuthenticated) {
+    <div class="col-sm-3" style="margin:0 auto">
+        <br />
+        <br />
+        <h3>Already Signed In</h3>
+        <br />
+        @using (Html.BeginForm("logout", "session", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
+
+            <input type="submit" class="greenButtonEdged" value="Logout" />
+        }
+    </div>
+}
+else {
+    <div class="row">
+        @*<div style="width:25%; margin:auto !important">*@
+        <div class="col-xs-1 col-sm-8  col-md-6 col-lg-4 mx-auto">
+            <div class="card-body">
+
+                @using (@Html.BeginForm("login", "session", FormMethod.Post, new { id = "loginfrm", role = "form", @class = "form-horizontal ecom-login" })) {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(s => s.returnUrl)
+
+                    <div class="form-group form-float position-relative">
+                        <div class="form-line">
+                            @Html.TextBoxFor(m => m.uname, new { @class = "form-control", @placeholder = "Enter Your Email" })
+                        </div>
+                        @if (!String.IsNullOrEmpty(Model.emailError1)) {
+                            <br />
+                            <label style="color:darkred">@Model.emailError1</label>
+                        }
+                    </div>
+
+                    <div class="form-group form-float position-relative">
+                        <div class="form-line">
+                            @Html.PasswordFor(m => m.pass, new { @class = "form-control", @placeholder = "Enter Your Password " })
+                        </div>
+
+                        @if (!String.IsNullOrEmpty(Model.pwdError1)) {
+                            <br />
+                            <label style="color:darkred">@Model.pwdError1</label>
+                        }
+
+                    </div>
+                    <div class="form-group2 row">
+                        <div class="col-md-6 col-12 text-center text-md-left">
+                            <fieldset>
+                                <input type="checkbox" id="remember-me" class="chk-remember">
+                                <label for="remember-me" style="color:black !important"> Remember Me</label>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6 col-12 text-center text-md-right"><a href=" @Url.Action("forgotPassword", "account")" class="card-link" style="color:dodgerblue !important">Forgot Password?</a></div>
+                    </div>
+
+                    <input type="hidden" name="Action" value="00"/>
+                    <button type="submit" id="submito" class="btn btn-primary btn-block btn-lg">Login</button>
+
+                }
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $("#loginfrm").submit(function () {
+
+                var regex = /^\w+([\.-]?\w+)*@('@')\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                if (!regex.test($("#uname").val())) {
+                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Invalid Email!', });
+                    return (false)
+                }
+            });
+        });
+    </script>
+}
