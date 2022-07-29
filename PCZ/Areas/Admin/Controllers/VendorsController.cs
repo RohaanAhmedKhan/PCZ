@@ -186,7 +186,7 @@ namespace PCZ.Areas.Admin.Controllers
             modal.unpaid = V.Where(x => x.jobs.Paid != true).Count();
             modal.pamount = V.Where(x => x.jobs.Paid == true).Sum(x => x.payments.Payment_Amount);
             modal.upamount = V.Where(x => x.jobs.Paid != true).Sum(x => x.payments.Payment_Amount);
-            modal.payments = db.Payment.Where(x => x.VendorID == Id);
+           // modal.payments = db.Payment.Where(x => x.VendorID == Id);
             modal.BuisinessName = vendor.BusinessName;
             modal.ImgURl = user.ImgUrl;
             modal.actualBalance = vendor.Balance;

@@ -201,7 +201,9 @@ namespace PCZ.Areas.Vendor.Controllers
 
             modal.paidBalance = paidBalance;
             modal.remainingBalance = remainingBalance;  
-            modal.actualBalance = actualBalance; 
+            modal.actualBalance = actualBalance;
+            modal.payments = db.PaymentHistory.Where(x => x.VendorID == VID).ToList();
+            modal.VendorName = db.Vendor.Where(x => x.Id == VID).Select(z => z.BusinessName).FirstOrDefault();
             return View(modal);
         }
      

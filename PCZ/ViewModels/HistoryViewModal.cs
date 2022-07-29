@@ -12,7 +12,6 @@ namespace PCZ.ViewModels
         public int unpaid { get; set; }
         public int pamount { get; set; }
         public int upamount { get; set; }
-        public IEnumerable<Payment> payments { get; set; }
         public List<Job> jobs { get; set; }
 
         public string BuisinessName { get; set; }
@@ -22,6 +21,8 @@ namespace PCZ.ViewModels
         public double? remainingBalance { get; set; }
         public double? paidBalance { get; set; }
         public double? actualBalance { get; set; }
+        public string VendorName { get; set; }
+        public List<PaymentHistory> payments { get; set; }
 
     }
 }
