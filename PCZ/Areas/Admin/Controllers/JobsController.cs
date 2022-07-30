@@ -130,16 +130,7 @@ namespace PCZ.Areas.Admin.Controllers
             job.OtherCharges = vm.Job.OtherCharges;
             job.OtherIssue = vm.Job.OtherIssue;
             job.ReturnDate = vm.Job.ReturnDate;
-            //if(vm.paid == "Paid")
-            //{
-            //    job.Paid = true;
-
-            //}
-            //if (vm.paid == "UnPaid")
-            //{
-            //    job.Paid = false;
-
-            //}
+            
             if (vm.status != null)
             {
                 job.Status = vm.status;
@@ -159,7 +150,7 @@ namespace PCZ.Areas.Admin.Controllers
             db.Entry(job).State = EntityState.Modified;
             db.SaveChanges();
             double bal1 = (double)vendor.Balance;
-            if (vm.status != "Cancelled" || vm.status != "Refunded")
+            if (vm.status != "Cancelled")
             {
                 vendor.Balance = bal1 + tp + vm.Job.OtherCharges;
             }
