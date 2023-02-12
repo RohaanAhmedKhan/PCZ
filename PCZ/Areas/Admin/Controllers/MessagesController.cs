@@ -25,7 +25,8 @@ namespace PCZ.Areas.Admin.Controllers
         // GET: Admin/Messages
         public ActionResult Index()
         {
-            return View(db.Messages.ToList().OrderBy( m => m.IsRead));
+            var list = db.Messages.OrderByDescending( m =>  m.RecievedTime).ThenBy(n=>n.IsRead).ToList();
+            return View(list);
         }
 
         // GET: Admin/Messages/Details/5

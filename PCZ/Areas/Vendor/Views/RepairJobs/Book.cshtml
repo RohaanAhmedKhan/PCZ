@@ -225,7 +225,6 @@
                 dataType: 'json',
                 data: { cat: dropdown.value },
                 success: function (series) {
-
                     $.each(series, function (i, s) {
                         $(cascade).append('<option value="' + s.Value + '" >' + s.Text + '</option>');
                     });
