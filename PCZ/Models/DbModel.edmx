@@ -155,7 +155,7 @@
           <Property Name="Color" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Category" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
-          <Property Name="Condition" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Condition" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Size" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Role">
@@ -199,7 +199,7 @@
           <Property Name="VendorID" Type="int" Nullable="false" />
           <Property Name="RecieveTime" Type="datetime" Nullable="false" />
           <Property Name="IsRead" Type="bit" Nullable="false" />
-          <Property Name="Sender" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sender" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK_account_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
@@ -803,7 +803,7 @@
           <Property Name="VendorID" Type="Int32" Nullable="false" />
           <Property Name="RecieveTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsRead" Type="Boolean" Nullable="false" />
-          <Property Name="Sender" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Sender" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="User" Relationship="Models.FK_VendorMessage_User" FromRole="VendorMessage" ToRole="User" />
         </EntityType>
         <Association Name="FK_VendorMessage_User">
@@ -868,7 +868,7 @@
           <Property Name="Color" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Category" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
-          <Property Name="Condition" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Condition" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PaymentHistory">

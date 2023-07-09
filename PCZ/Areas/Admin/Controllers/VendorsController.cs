@@ -18,11 +18,15 @@ namespace PCZ.Areas.Admin.Controllers
         public ActionResult Index(int? id, int? act) {
             var vm = new VendorsVM();
             vm.Action = act ?? 0;
-            vm.Vendors = db.Vendor.ToList();
-
+            vm.Vendors = db.Vendor.ToList().OrderByDescending(x=> x.Id);
+            
             if (id != null) {
                 vm.Vendor = db.Vendor.Find(id);
             }
+
+            ViewBag.ShowAlert = Session["ShowAlert"] ?? false;
+            Session.Remove("ShowAlert");
+
             return View(vm);
         }
 
@@ -37,6 +41,7 @@ namespace PCZ.Areas.Admin.Controllers
 
                 vm.Vendor.PersonalCode = "VN" + (db.Vendor.Count() + 1).ToString("000");
 
+               
                 try {
                     vm.Vendor.User.ImgUrl = saveImage(Image, "PFP-" + vm.Vendor.PersonalCode);
                 }
@@ -46,10 +51,10 @@ namespace PCZ.Areas.Admin.Controllers
                 }
 
                 vm.Vendor.User.RoleID = 3;
+                
 
                 db.User.Add(vm.Vendor.User);
-                db.SaveChanges();
-
+                
                 var acc = new account();
                 acc.salt = hash.getSalt(32);
                 acc.email = vm.email;
@@ -57,9 +62,13 @@ namespace PCZ.Areas.Admin.Controllers
                 acc.active = true;
                 acc.id = vm.Vendor.User.Id;
                 db.account.Add(acc);
-                
+                vm.Vendor.Date = DateTime.Now;
+
                 db.Vendor.Add(vm.Vendor);
+
                 db.SaveChanges();
+
+                Session["ShowAlert"] = true;
 
                 return RedirectToAction("Index", new { id = vm.Vendor.Id });
             }

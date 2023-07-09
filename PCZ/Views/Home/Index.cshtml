@@ -477,17 +477,18 @@
                 </div>
             </div>
             <div class="col-lg-6 h-100 block-28__form-side">
-                <form onsubmit="return validateform()" class="contact-form text-center" id="cntctfrm" action="~/ContactUs/Index" method="post">
+                @*onsubmit="return validateform()"*@
+                <form class="contact-form text-center" id="cntctfrm">
                     <div class="contact-form__header mb-5">
                         <h6 class="contact-form__title mb-3">Contact Us</h6>
                         <p class="contact-form__paragraph mb-0 mx-auto">
                             Send us a message
                         </p>
                     </div>
-                    <input type="text" class="contact-form__input" placeholder="Full Name" name="name" required>
+                    <input type="text" id="cName" class="contact-form__input" placeholder="Full Name" name="name" required>
                     <input type="email" class="contact-form__input" id="msgemail" placeholder="Email" name="email" required>
-                    <textarea class="contact-form__input" placeholder="Message" name="message" required></textarea>
-                    <button class="btn btn-primary w-100">SEND MESSAGE</button>
+                    <textarea class="contact-form__input" placeholder="Message" name="message" id="cMessage" required></textarea>
+                    <button type="submit" class="btn btn-primary w-100">SEND MESSAGE</button>
                 </form>
             </div>
         </div>
@@ -544,7 +545,7 @@
         </div>
         <p class="block-41__copyrights text-center">POWERED BY YRM SOLUTION</p>
     </div>
-    
+
 </div>
 
 <!-- =================================== -->
@@ -554,8 +555,12 @@
 </button>
 
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+@section Scripts {
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
 <script>
 
     function validateform() {
@@ -563,11 +568,49 @@
         var regex = /^\w+([\.-]?\w+)*@('@')\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (!regex.test($("#msgemail").val())) {
             Swal.fire({ type: 'error', title: 'Invalid Email', text: 'Please email in the correct format!', });
-            return (false)
+            return (false);
         }
-        else
-            return true
+        else {
+            return (true);
+        }
     }
+        jQuery(document).ready(function () {
+        jQuery("#cntctfrm").submit(function () {
+
+        event.preventDefault(); // avoid to execute the actual submit of the form.
+
+             var regex = /^\w+([\.-]?\w+)*@('@')\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!regex.test($("#msgemail").val())) {
+            Swal.fire({ type: 'error', title: 'Invalid Email', text: 'Please email in the correct format!', });
+            return (false);
+        }
+
+            jQuery.ajax({
+                type: "POST",
+                url: '@Url.Action("Index", "ContactUs")',
+                dataType: "json",
+                data: {
+                    "email": jQuery("#msgemail").val(),
+                    "message": jQuery("#cMessage").val(),
+                    "name": jQuery("#cName").val(),
+                }
+            })
+            .done(function (data) {
+                Swal.fire(
+                    'Sucess!',
+                    'Your message has been received!',
+                    'success'
+                );
+                jQuery('#msgemail').val('');
+                jQuery('#cMessage').val('');
+                jQuery('#cName').val('');
+            })
+            .fail(function () {
+                alert("Sorry. Server unavailable. ");
+            });
+
+        });
+    });
 
 
     var mybutton = document.getElementById("myBtn");
@@ -588,3 +631,4 @@
 
 
 </script>
+}

@@ -354,7 +354,7 @@
         myAjaxCall();
         window.setInterval(function () {
             myAjaxCall();
-        }, 10000);
+        }, 5000);
         callFlag = true;
     });
 
@@ -408,7 +408,7 @@
         msgerInput.value = "";
         setTimeout(function () {
             callFlag = true;
-        }, 5000);
+        }, 2500);
     });
 
 
@@ -459,7 +459,7 @@ function sendmsg()
     console.log(`Call Flag Value :: ${callFlag}`)
         $.ajax({
             type: "POST",
-            url: '@Url.Action("SendMessage", "VendorDashboard")',
+            url: 'SendMessage',
             data: {
                 msg: msgerInput.value
             },

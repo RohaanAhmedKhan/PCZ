@@ -179,6 +179,10 @@
     .msger-chat {
         background-color: #fcfcfe;
     }
+
+    .loadChat {
+        cursor: pointer;
+    }
 </style>
 
 <div class="row w3-container w3-center w3-animate-bottom" style="margin-top:50px;">
@@ -198,7 +202,7 @@
                     <table class="table table-hover table-striped" style="text-align:center">
                         <tr style="background-color:#3C8DBC;color:#ffffff">
 
-                            <th style="text-align:center" colspan="3">Messeges</th>
+                            <th style="text-align:center" colspan="3">Messages</th>
                         </tr>
 
                         @foreach (var i in Model.vendors)
@@ -210,7 +214,8 @@
                                         <i class="fas fa-user" style="font-size:30px;padding-top:0px"></i>
                                     </td>
                                     <td class="text ">
-                                        @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null) <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>
+                                        <a class="loadChat"  data-value="@i.VendorID" > <span>@i.Sender (@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message) </span></a>
+                                       @* @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null) <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>*@
 
                                     </td>
                                 </tr>
@@ -223,7 +228,9 @@
                                         <i class="fas fa-user" style="font-size:30px;padding-top:0px"></i>
                                     </td>
                                     <td class="text ">
-                                        @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null)  <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>
+                                        <a  class="loadChat" data-value="@i.VendorID" > <span>@i.Sender (@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message) </span></a>
+
+                                    @*    @Html.ActionLink(i.Sender, "LoadChat", "Dashboard", new { vid = i.VendorID }, null)  <span>(@Model.vendors.FirstOrDefault(x => x.VendorID == i.VendorID).Message)</span>*@
                                     </td>
                                 </tr>
                             }
@@ -401,7 +408,7 @@
         window.setInterval(function () {
             myAjaxCall();
             myAjaxCall2();
-        }, 10000);
+        }, 5000);
         callFlag = true;
     });
 
@@ -415,14 +422,20 @@
               success: function (e) {
                   var node = document.getElementById('vendorChats').innerHTML;
                   node = node.replace('\n', '');
-                  node = node.replace(/\s+/g, '');
+                  node = node.replace(/\s+/g, '').replace('</tbody>', '').replace('<tbody>','');
                   var ee = e.replace(/\s+/g, '');
-
+                
                   if (node === ee) {
                       console.log("Vendors same");
                   }
                   else {
+                      
                       console.log("Vendors not same");
+
+                      console.log(ee);
+                      console.log(node);
+
+
                       var audio = new Audio('../../../../assets/sounds/notif_newjob.mp3');
                       audio.play();
                       $('#vendorChats').html(e)
@@ -449,7 +462,6 @@
                   node = node.replace('\n', '');
                   node = node.replace(/\s+/g, '');
                   var ee = e.replace(/\s+/g, '');
-
                   if (node === ee) {
                       console.log("Chat same");
                   }
@@ -466,7 +478,7 @@
         }
     }
 
-   
+
     // Icons made by Freepik from www.flaticon.com
     const BOT_IMG = "@ViewBag.VendorImg";
     var PERSON_IMG = "/Content/Images/PFPPCZVN004HK.png";
@@ -483,7 +495,7 @@
         msgerInput.value = "";
         setTimeout(function () {
             callFlag = true;
-        }, 5000);
+        }, 2500);
     });
 
 
@@ -531,7 +543,7 @@ function sendmsg()
     console.log(`Call Flag Value :: ${callFlag}`)
         $.ajax({
             type: "POST",
-            url: '@Url.Action("SendMessage", "Dashboard")',
+            url: 'SendMessage',
             data: {
                 msg: msgerInput.value,
                 vid: vndID.value
@@ -553,6 +565,26 @@ function sendmsg()
 
         })
 }
+
+
+    $(".loadChat").click(function () {
+
+        let vendorId = $(this).data("value");
+
+        $.ajax({
+            type: "GET",
+            url: `LoadChat?vid=${vendorId}`,
+            data: null,
+               success: function (e) {
+                $('#chatBoxView').html(e);
+                msgerChat.scrollTop = msgerChat.scrollHeight;
+               },
+            error: function (e) {
+                console.log("nope" + e);
+            }
+        })
+    });
+
     $(".minibutton").click(function () {
         if ($(this).html() == "_") {
             $(this).html("+");

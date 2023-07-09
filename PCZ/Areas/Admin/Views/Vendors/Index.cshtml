@@ -340,9 +340,18 @@ using (Html.BeginForm("Create", "Vendors", FormMethod.Post, new { enctype = "mul
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script>
+<script>
 
-        $(document).ready(function () {
+    $(document).ready(function () {
+            if('@ViewBag.ShowAlert' == 'True')
+            {
+                Swal.fire(
+                    'Sucess!',
+                    'Vendor Saved successfully!',
+                    'success'
+                )
+            }
+
             $("#crf").submit(function () {
 
                 var regex = /^\w+([\.-]?\w+)*@('@')\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -351,6 +360,8 @@ using (Html.BeginForm("Create", "Vendors", FormMethod.Post, new { enctype = "mul
                     return (false)
                 }
             });
+
+
         });
 
         if (window.history.replaceState) {
@@ -367,7 +378,7 @@ using (Html.BeginForm("Create", "Vendors", FormMethod.Post, new { enctype = "mul
             }else{
                 inp.value = null;
                 alert("Only jpg/jpeg and png files are allowed!");
-            }   
+            }
         }
 
         function swalConfirm(text, formId){
@@ -386,13 +397,13 @@ using (Html.BeginForm("Create", "Vendors", FormMethod.Post, new { enctype = "mul
                 if (result.value) {
                     $("#"+formId).submit();
                 } else {
-                        
+
                     console.log(result.dismiss)
                 }
             })
-                
+
 
             return con;
         }
-    </script>
+</script>
 }

@@ -22,7 +22,7 @@ namespace PCZ.Controllers {
             try {
                 db.Messages.Add(msg);
                 db.SaveChanges();
-                return Content("Message Recieved");
+                return Json( "Message Recieved");
             }
             catch (DbEntityValidationException e) {
                 return Content("Sorry, there was an error, please send your message again");

@@ -29,25 +29,25 @@ namespace PCZ.Areas.Admin.Controllers
             vm.vend = db.Job.Where(x => x.Status == "Completed").Count();
             List<Messages> msgs = new List<Messages>();
             vm.Messages = msgs;
+            Session.Remove("VendorID");
+            // Session["VendorID"] = vm.vendors.OrderBy(x=> x.RecieveTime).FirstOrDefault().VendorID;
             return View(vm);
         }
 
-        public ActionResult LoadChat(int vid)
+        [HttpGet]
+        public PartialViewResult LoadChat(int vid)
         {
 
             Session["VendorID"] = vid;
 
             var vm = new AdminDashboardVM();
-            vm.Notifications = db.Notification.Where(x => !x.IsRead && x.UserId == 14);
             vm.VendorID = vid;
-            vm.Pending = db.Job.Where(x => x.Status == "Pending").Count();
-            vm.vend = db.Vendor.Count();
             VName = GetVendorName(vid);
             ViewBag.VName = VName;
             List<AdminMessage> am = db.AdminMessage.Where(x => x.RecipentID == vid).OrderByDescending(x => x.RecieveTime).ToList();
             List<VendorMessage> vms = db.VendorMessage.Where(x => x.VendorID == vid).OrderByDescending(x => x.RecieveTime).ToList();
             List<Messages> msgs = new List<Messages>();
-            UpdateMessageStatus(vms);
+           // UpdateMessageStatus(vms);
             using (var ctx = new PCZDbContext())
             {
                 //select * from VendorMessage V  where v.RecieveTime = (Select max(RecieveTime) from VendorMessage where VendorID = v.VendorID) order by RecieveTime Desc
@@ -68,6 +68,13 @@ namespace PCZ.Areas.Admin.Controllers
             }
             foreach (var msg in vms)
             {
+                if (msg.IsRead == false)
+                {
+                    var vm1 = db.VendorMessage.Find(msg.Id);
+                    vm1.IsRead = true;
+                    db.Entry(vm1).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
                 Messages m = new Messages()
                 {
                     Name = msg.Sender,
@@ -80,7 +87,9 @@ namespace PCZ.Areas.Admin.Controllers
 
             vm.Messages = msgs.OrderBy(x => x.RecievedTime).ToList();
             ViewBag.VendorImg = db.User.Where(x => x.Id == vid && x.RoleID == 3).Select(x => x.ImgUrl).FirstOrDefault();
-            return View("index", vm);
+            return PartialView(@"~/Areas/Admin/Views/Dashboard/_VendorChatDetails.cshtml", vm);
+
+            //return View("index", vm);
         }
         [HttpGet]
         public PartialViewResult VendorChats()
@@ -183,7 +192,7 @@ namespace PCZ.Areas.Admin.Controllers
         {
             if (!String.IsNullOrEmpty(msg) && !String.IsNullOrEmpty(vid.ToString()))
             {
-                string VName = GetVendorName(vid);
+                vid = Convert.ToInt32(Session?["VendorID"]);
                 int AID = GetAdminID();
                 AdminMessage am = new AdminMessage
                 {
