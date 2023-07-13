@@ -37,28 +37,25 @@
 
     <div class="row div-body">
         <div class="col-sm-12">
-            @using (Html.BeginForm("ReplyToCustomer", "Messages", FormMethod.Post, htmlAttributes: new { @class = "Send-Email" }))
-                    {
-            <table class="table">
-                <tr>
-                    <td>Reply To Email :</td>
-                    <td>
-                        @Html.TextAreaFor(z => z.ReplyMessage, htmlAttributes: new { @class = "form-control ", @cols = 100, @rows = 5 })
-                                        @Html.HiddenFor(y => y.Name)
-                                        @Html.HiddenFor(y => y.Email)
-                                        @Html.HiddenFor(y => y.RecievedTime)
-                                        @Html.HiddenFor(y => y.Message)
-                                        @Html.HiddenFor(y => y.Id)
-                                        @Html.HiddenFor(z => z.ReplyMessage)
-                                        <button class="btn btn-primary mt-4" style="margin-top:20px;" id="b3" type="button">@*<i class="fa fa-edit"></i>*@ Send</button>
-                                    </td>
-                </tr>
-                
-            </table>
-                
-            }
+            <form  class="Send-Email" >
+                <table class="table">
+                    <tr>
+                        <td>Reply To Email :</td>
+                        <td>
+                            @Html.TextAreaFor(z => z.ReplyMessage, htmlAttributes: new { @class = "form-control ", @cols = 100, @rows = 5, @id = "mReplyMessage" } )
+                            @Html.HiddenFor(y => y.Name, new { @id = "mName" })
+                            @Html.HiddenFor(y => y.Email, new { @id = "mEmail" })
+                            @Html.HiddenFor(y => y.RecievedTime, new { @id = "mRecievedTime" })
+                            @Html.HiddenFor(y => y.Message, new { @id = "mMessage" })
+                            @Html.HiddenFor(y => y.Id, new { @id = "mId" })
+                            @Html.HiddenFor(z => z.ReplyMessage, new { @id = "m2ReplyMessage" })
+                            <button class="btn btn-primary mt-4" style="margin-top:20px;" id="b3" type="submit">@*<i class="fa fa-edit"></i>*@ Send</button>
+                        </td>
+                    </tr>
 
-
+                </table>
+            </form>
+            
         </div>
     </div>
 </div>
@@ -66,14 +63,29 @@
 <script>
     document.getElementById('b3').onclick = function (e) {
         e.preventDefault();
-        swal("Email Sent!", "The Reply of this email has been sent!", "success");
-        //swal({
-        //    title: "Email Sent!",
-        //    text: "The Reply of this email has been sent!",
-        //    type: "success"
-        //})
-        $('.Send-Email').submit();
+          jQuery.ajax({
+                type: "POST",
+                url: '@Url.Action("ReplyToCustomer", "Messages")',
+                dataType: "json",
+                data: {
+                    "Email": jQuery("#mEmail").val(),
+                    "Name": jQuery("#mName").val(),
+                    "RecievedTime": jQuery("#mRecievedTime").val(),
+                    "ReplyMessage": jQuery("#mReplyMessage").val(),
+                }
+            })
+            .done(function (data) {
+                Swal.fire(
+                    'Sucess!',
+                    'Your message has been received!',
+                    'success'
+                );
+                jQuery('#mReplyMessage').val('');
+            })
+            .fail(function () {
+                alert("Sorry. Server unavailable. ");
+            });
         return true;
     };
-      
+
 </script>

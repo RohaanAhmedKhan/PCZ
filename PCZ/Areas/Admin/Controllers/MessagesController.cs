@@ -4,28 +4,35 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
+using Newtonsoft.Json;
 using PCZ.Models;
 using PCZ.ViewModels;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace PCZ.Areas.Admin.Controllers
 {
-    [CheckAuthorization (Roles = "Admin")]
+    [CheckAuthorization(Roles = "Admin")]
 
     public class MessagesController : Controller
     {
+     
         private PCZDbContext db = new PCZDbContext();
 
         // GET: Admin/Messages
         public ActionResult Index()
         {
-            var list = db.Messages.OrderBy( m =>  m.Id).ThenBy(n=>!n.IsRead).ToList();
+            var list = db.Messages.OrderBy(m => m.Id).ThenBy(n => !n.IsRead).ToList();
             return View(list);
         }
 
@@ -82,54 +89,95 @@ namespace PCZ.Areas.Admin.Controllers
         }
         [HttpPost]
 
-        public ActionResult ReplyToCustomer(MessagesViewModel model)
+        public JsonResult ReplyToCustomer(MessagesViewModel model)
         {
             string body = $"<h2> http://phonencomputerzone.com/ </h2>" +
                           $"<hr>" +
                           $"{model.ReplyMessage}";
 
-            SendEmail("info@phonencomputerzone.com", model.Email, $"Phone and Computer Zone. Answering your query. {model.Name}", body, model.Name);
-            return RedirectToAction("Index");
+           var res = SendEmail(
+                "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",
+                $"Phone and Computer Zone. Answering your query. {model.Name}",
+                body,
+                new List<string> { model.Email },
+                "info@phonencomputerzone.com"
+                ).Result;
+            //  SendEmail("info@phonencomputerzone.com", model.Email, $"Phone and Computer Zone. Answering your query. {model.Name}", body, model.Name);
+            return Json("Meesage Sent" + res);
         }
 
-    public bool SendEmail(string from, string to, string subject, string text, string name)
+
+        public async Task<bool> SendEmail(string apiKey, string subject,
+          string message, List<string> emails, string fromEmail)
+        {
+
+            try
+            {
+                System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+
+                var client = new SendGridClient(apiKey);
+                var from = new EmailAddress("info@phonencomputerzone.com", "PhonenComputerZone");
+                var subject1 = subject;
+                var to = new EmailAddress("rohaanahmedkhan1@gmail.com");
+                var plainTextContent = message;
+                var htmlContent = message;
+                var msg = MailHelper.CreateSingleEmail(from, to, subject1, plainTextContent, htmlContent);
+                var task = Task.Run(() => client.SendEmailAsync(msg));
+                task.Wait();
+                var response = task.Result;
+
+                return response.IsSuccessStatusCode;
+              
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+        }
+        public bool SendEmail(string from, string to, string subject, string text, string name)
     {
-            var senderEmail = new MailAddress(from, "info@phonencomputerzone.com");
-            var receiverEmail = new MailAddress(to, name);
-            var password = "5N_6q1il";
-            var sub = subject;
-            var body = text;
-            var smtp = new SmtpClient
+         
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Haroon", "info@phonencomputerzone.com"));
+            message.To.Add(new MailboxAddress(name, to));
+            message.Subject = subject;
+
+            message.Body = new TextPart("plain")
             {
-                Host = "webmail.phonencomputerzone.com",
-                Port = 465,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(senderEmail.Address, password)
+                Text = text
             };
-            using (var mess = new MailMessage(senderEmail, receiverEmail)
+
+            using (var client = new SmtpClient())
             {
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            })
-                //{
-                smtp.Send(mess);
+                client.Connect("webmail.phonencomputerzone.com", 465, true);
+
+                // Note: only needed if the SMTP server requires authentication
+                client.Authenticate("info@phonencomputerzone.com", "5N_6q1il");
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
 
 
+            //var smtp = new SmtpClient
+            //{
+            //    Host = "webmail.phonencomputerzone.com",
+            //    Port = 25,
+            //    EnableSsl = true,
+            //    DeliveryMethod = SmtpDeliveryMethod.Network,
+            //    UseDefaultCredentials = false,
+            //    Credentials = new NetworkCredential(senderEmail.Address, password)
+            //};
+            //using (var mess = new MailMessage(senderEmail, receiverEmail)
+            //{
+            //    Subject = subject,
+            //    Body = body,
+            //    IsBodyHtml = true
+            //})
+            //    //{
+            //    smtp.Send(mess);
 
-
-            //System.Net.Mail.MailMessage objMM = new System.Net.Mail.MailMessage();
-            //objMM.From = new MailAddress(from, "john doe");
-            //objMM.To.Add(new MailAddress(to));    //Note: this To a collection
-            //objMM.Subject = "Subject1";
-            //objMM.Body = "Hello world this is my text";
-            //objMM.IsBodyHtml = true;
-
-            //SmtpClient smtp = new SmtpClient("phonencomputerzone.com");
-            //smtp.Credentials = new NetworkCredential(from, password);
-            //smtp.Send(objMM);
 
 
             return true;
@@ -202,4 +250,6 @@ namespace PCZ.Areas.Admin.Controllers
             base.Dispose(disposing);
         }
     }
+
+   
 }
