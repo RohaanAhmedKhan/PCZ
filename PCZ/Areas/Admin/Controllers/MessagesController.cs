@@ -1,24 +1,16 @@
-﻿using System;
+﻿using MailKit.Net.Smtp;
+using PCZ.Models;
+using PCZ.ViewModels;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+using System.Net.Mail;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
-using MimeKit.Text;
-using Newtonsoft.Json;
-using PCZ.Models;
-using PCZ.ViewModels;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 
 namespace PCZ.Areas.Admin.Controllers
 {
@@ -26,7 +18,7 @@ namespace PCZ.Areas.Admin.Controllers
 
     public class MessagesController : Controller
     {
-     
+
         private PCZDbContext db = new PCZDbContext();
 
         // GET: Admin/Messages
@@ -57,7 +49,8 @@ namespace PCZ.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            if (!messages.IsRead) {
+            if (!messages.IsRead)
+            {
                 messages.IsRead = true;
                 db.Entry(messages).State = EntityState.Modified;
                 db.SaveChanges();
@@ -91,18 +84,16 @@ namespace PCZ.Areas.Admin.Controllers
 
         public JsonResult ReplyToCustomer(MessagesViewModel model)
         {
-            string body = $"<h2> http://phonencomputerzone.com/ </h2>" +
-                          $"<hr>" +
-                          $"{model.ReplyMessage}";
+            string body = $"{model.ReplyMessage}";
 
-           var res = SendEmail(
-                "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",
-                $"Phone and Computer Zone. Answering your query. {model.Name}",
-                body,
-                new List<string> { model.Email },
-                "info@phonencomputerzone.com"
-                ).Result;
-            //  SendEmail("info@phonencomputerzone.com", model.Email, $"Phone and Computer Zone. Answering your query. {model.Name}", body, model.Name);
+            var res = SendEmail(
+                 "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",
+                 $"Phone and Computer Zone.Answering your query {model.Name}.",
+                 body,
+                 new List<string> { model.Email },
+                 "info@phonencomputerzone.com"
+                 ).Result;
+           // var res = SendEmail("info@phonencomputerzone.com", model.Email, $"Phone and Computer Zone. Answering your query. {model.Name}", body, model.Name);
             return Json("Meesage Sent" + res);
         }
 
@@ -110,6 +101,7 @@ namespace PCZ.Areas.Admin.Controllers
         public async Task<bool> SendEmail(string apiKey, string subject,
           string message, List<string> emails, string fromEmail)
         {
+
 
             try
             {
@@ -119,7 +111,7 @@ namespace PCZ.Areas.Admin.Controllers
                 var client = new SendGridClient(apiKey);
                 var from = new EmailAddress("info@phonencomputerzone.com", "PhonenComputerZone");
                 var subject1 = subject;
-                var to = new EmailAddress("rohaanahmedkhan1@gmail.com");
+                var to = new EmailAddress(emails.FirstOrDefault());
                 var plainTextContent = message;
                 var htmlContent = message;
                 var msg = MailHelper.CreateSingleEmail(from, to, subject1, plainTextContent, htmlContent);
@@ -128,7 +120,7 @@ namespace PCZ.Areas.Admin.Controllers
                 var response = task.Result;
 
                 return response.IsSuccessStatusCode;
-              
+
             }
             catch (System.Exception ex)
             {
@@ -136,29 +128,33 @@ namespace PCZ.Areas.Admin.Controllers
             }
         }
         public bool SendEmail(string from, string to, string subject, string text, string name)
-    {
-         
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Haroon", "info@phonencomputerzone.com"));
-            message.To.Add(new MailboxAddress(name, to));
-            message.Subject = subject;
+        {
+            //System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            message.Body = new TextPart("plain")
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+            var senderEmail = new MailAddress(from, "info@phonencomputerzone.com");
+            var receiverEmail = new MailAddress(to, name);
+            var password = "5N_6q1il";
+            var sub = subject;
+            var body = text;
+            var smtp = new System.Net.Mail.SmtpClient
             {
-                Text = text
+                Host = "webmail.phonencomputerzone.com",
+                Port = 25,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(senderEmail.Address, password)
             };
-
-            using (var client = new SmtpClient())
+            using (var mess = new MailMessage(senderEmail, receiverEmail)
             {
-                client.Connect("webmail.phonencomputerzone.com", 465, true);
-
-                // Note: only needed if the SMTP server requires authentication
-                client.Authenticate("info@phonencomputerzone.com", "5N_6q1il");
-
-                client.Send(message);
-                client.Disconnect(true);
-            }
-
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            })
+                //{
+                smtp.Send(mess);
 
             //var smtp = new SmtpClient
             //{
@@ -181,11 +177,11 @@ namespace PCZ.Areas.Admin.Controllers
 
 
             return true;
-    }
+        }
 
 
-    // GET: Admin/Messages/Edit/5
-    public ActionResult Edit(int? id)
+        // GET: Admin/Messages/Edit/5
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -251,5 +247,5 @@ namespace PCZ.Areas.Admin.Controllers
         }
     }
 
-   
+
 }
